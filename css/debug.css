@@ -1,0 +1,69 @@
+/* 960 viewports */
+
+.fixed-image {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 4697px;
+  opacity: .5;
+  z-index: 1000;
+  background: url(../img/economybookings.png) top center no-repeat;
+}
+
+.overlay-button {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  opacity: .8;
+  color: #000;
+  font-size: 12px;
+  z-index: 1001;
+  background-color: #ddd;
+}
+
+/* 640 viewports */
+
+.fixed-image-640 {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 5000px;
+  opacity: .5;
+  z-index: 1000;
+  background: url(../img/640.png) top center no-repeat;
+}
+
+.overlay-button-640 {
+  position: fixed;
+  left: 20px;
+  bottom: 40px;
+  opacity: .8;
+  color: #000;
+  font-size: 12px;
+  z-index: 1001;
+  background-color: #ddd;
+}
+
+
+/* 320 viewports*/
+
+.fixed-image-320 {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 6500px;
+  opacity: .5;
+  z-index: 1000;
+  background: url(../img/320.png) top center no-repeat;
+}
+
+.overlay-button-320 {
+  position: fixed;
+  left: 20px;
+  bottom: 60px;
+  opacity: .8;
+  color: #000;
+  font-size: 12px;
+  z-index: 1001;
+  background-color: #ddd;
+}
