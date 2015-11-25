@@ -620,7 +620,8 @@
   .all-locations-items:nth-child(n+2),
   .company-branches:last-child,
   .company-branches .flag:nth-child(n+7),
-  .select-option {
+  .select-option,
+  .lang-curr-btn {
     display: none;
   }
 
@@ -706,8 +707,11 @@
     vertical-align: middle;
   }
 
-  .lang-curr-btn {
-    display: none;
+  .select-mobile {
+    display: inline-block;
+    opacity: 0;
+  	position: absolute;
+  	z-index: -1;
   }
 
   /* Dropdown in Navigation */
