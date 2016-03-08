@@ -34,15 +34,12 @@
             </div><!-- .nav-menu-btn -->
             <div class="navbar-menu">
               <div class="menu-wrap">
-                <div class="dropdown navbar-btn navbar-btn-contact">
-                  <div class="navbar-btn-header navbar-btn-communication">
-                    <span class="fa fa-phone fa-lg"></span>
-                  </div>
-                  <div class="communication">
+                <div class="navbar-btn navbar-btn-contact js-dropdown" data-dropdown-type="closing">
+                  <button class="communication js-dropdown-toggler">
                     <span class="phone"><a class="phone-link" href="tel:+37166010858">(+371) 6-601-0858</a></span>
                     <span class="phone-text">communication in english</span>
-                  </div>
-                  <div class="dropdown-content">
+                  </button>
+                  <div class="dropdown-content js-dropdown-box">
                     <div class="dropdown-phones">
                       <div class="communication">
                         <span class="phone"><a class="phone-link" href="tel:+37166010858">(+371) 6-601-0858</a></span>
@@ -167,26 +164,26 @@
                     </select>
                   </div><!-- .navbar-btn-header -->
                 </div><!-- .navbar-btn .btn-mobile -->
-                <div class="dropdown navbar-btn lang-curr-btn">
-                  <span class="navbar-btn-header navbar-btn-lang-curr">EN</span>
-                  <div class="dropdown-content">
+                <div class="navbar-btn lang-curr-btn js-dropdown js-local" data-dropdown-type="closing">
+                  <button class="navbar-btn-header navbar-btn-lang-curr js-dropdown-toggler js-local-display">EN</button>
+                  <div class="dropdown-content js-dropdown-box">
                     <div class="dropdown-languages dropdown-content-flex">
                       <div class="languages dropdown-right-border">
-                        <a class="dropdown-navbar-items" href="#">Deutsch</a>
-                        <a class="dropdown-navbar-items is-active-language" href="#">English</a>
-                        <a class="dropdown-navbar-items" href="#">Español</a>
-                        <a class="dropdown-navbar-items" href="#">Suomi</a>
-                        <a class="dropdown-navbar-items" href="#">Français</a>
-                        <a class="dropdown-navbar-items" href="#">Italiano</a>
-                        <a class="dropdown-navbar-items" href="#">Latviešu</a>
+                        <a class="dropdown-navbar-items js-local-toggler" href="#" data-locale-value="DE">Deutsch</a>
+                        <a class="dropdown-navbar-items is-active-locale js-local-toggler" href="#" data-lang-curr-value="EN">English</a>
+                        <a class="dropdown-navbar-items js-local-toggler" href="#" data-locale-value="ES">Español</a>
+                        <a class="dropdown-navbar-items js-local-toggler" href="#" data-locale-value="FI">Suomi</a>
+                        <a class="dropdown-navbar-items js-local-toggler" href="#" data-locale-value="FR">Français</a>
+                        <a class="dropdown-navbar-items js-local-toggler" href="#" data-locale-value="IT">Italiano</a>
+                        <a class="dropdown-navbar-items js-local-toggler" href="#" data-locale-value="LV">Latviešu</a>
                       </div><!-- .languages -->
                       <div class="languages">
-                        <a class="dropdown-navbar-items" href="#">Nederlands</a>
-                        <a class="dropdown-navbar-items" href="#">Polski</a>
-                        <a class="dropdown-navbar-items" href="#">Portugês</a>
-                        <a class="dropdown-navbar-items" href="#">Русский</a>
-                        <a class="dropdown-navbar-items" href="#">Svenska</a>
-                        <a class="dropdown-navbar-items" href="#">简体中文</a>
+                        <a class="dropdown-navbar-items js-local-toggler" href="#" data-locale-value="NL">Nederlands</a>
+                        <a class="dropdown-navbar-items js-local-toggler" href="#" data-locale-value="PL">Polski</a>
+                        <a class="dropdown-navbar-items js-local-toggler" href="#" data-locale-value="PT">Portugês</a>
+                        <a class="dropdown-navbar-items js-local-toggler" href="#" data-locale-value="RU">Русский</a>
+                        <a class="dropdown-navbar-items js-local-toggler" href="#" data-locale-value="SV">Svenska</a>
+                        <a class="dropdown-navbar-items js-local-toggler" href="#" data-locale-value="ZH">简体中文</a>
                       </div><!-- .languages -->
                     </div><!-- .dropdown-language -->
                   </div><!-- .dropdown-content -->
@@ -208,26 +205,46 @@
                     </select>
                   </div><!-- .navbar-btn-header -->
                 </div><!-- .navbar-btn .btn-mobile -->
-                <div class="dropdown navbar-btn lang-curr-btn">
-                  <span class="navbar-btn-header navbar-btn-lang-curr">&euro;</span>
-                  <div class="dropdown-content">
+                <div class="navbar-btn lang-curr-btn js-dropdown js-local" data-dropdown-type="closing">
+                  <button class="navbar-btn-header navbar-btn-lang-curr js-dropdown-toggler js-local-display">&euro;</button>
+                  <div class="dropdown-content js-dropdown-box">
                     <div class="dropdown-currency">
-                      <button class="dropdown-navbar-items" type="button" name="button">Euro<span class="currency">&euro;</span>
-                      <button class="dropdown-navbar-items" type="button" name="button">Us Dollars<span class="currency">$</span></button>
-                      <button class="dropdown-navbar-items" type="button" name="button">GB Pound<span class="currency">&pound;</span></button>
-                      <button class="dropdown-navbar-items" type="button" name="button">Australian Dollar<span class="currency">$</span></button>
-                      <button class="dropdown-navbar-items" type="button" name="button">Bahrain Dinars<span class="currency">BHD</span></button>
-                      <button class="dropdown-navbar-items" type="button" name="button">Botswana Pula<span class="currency">BWP</span></button>
-                      <button class="dropdown-navbar-items" type="button" name="button">Bahamian Dollar<span class="currency">$</span></button>
-                      <button class="dropdown-navbar-items" type="button" name="button">Argentine Pesos<span class="currency">$</span></button>
-                      <button class="dropdown-navbar-items" type="button" name="button">Armenian Dram<span class="currency">AMD</span></button>
-                      <button class="dropdown-navbar-items" type="button" name="button">Brazilian Reais<span class="currency">R$</span></button>
+                      <button class="dropdown-navbar-items is-active-locale js-local-toggler" data-locale-value="€">
+                        Euro<span class="currency">€</span>
+                      </button>
+                      <button class="dropdown-navbar-items js-local-toggler" data-locale-value="$">
+                        Us Dollars<span class="currency">$</span>
+                      </button>
+                      <button class="dropdown-navbar-items js-local-toggler" data-locale-value="£">
+                        GB Pound<span class="currency">£</span>
+                      </button>
+                      <button class="dropdown-navbar-items js-local-toggler" data-locale-value="$">
+                        Australian Dollar<span class="currency">$</span>
+                      </button>
+                      <button class="dropdown-navbar-items js-local-toggler" data-locale-value="BHD">
+                        Bahrain Dinars<span class="currency">BHD</span>
+                      </button>
+                      <button class="dropdown-navbar-items js-local-toggler" data-locale-value="BWP">
+                        Botswana Pula<span class="currency">BWP</span>
+                      </button>
+                      <button class="dropdown-navbar-items js-local-toggler" data-locale-value="$">
+                        Bahamian Dollar<span class="currency">$</span>
+                      </button>
+                      <button class="dropdown-navbar-items js-local-toggler" data-locale-value="$">
+                        Argentine Pesos<span class="currency">$</span>
+                      </button>
+                      <button class="dropdown-navbar-items js-local-toggler" data-locale-value="AMD">
+                        Armenian Dram<span class="currency">AMD</span>
+                      </button>
+                      <button class="dropdown-navbar-items js-local-toggler" data-locale-value="R$">
+                        Brazilian Reais<span class="currency">R$</span>
+                      </button>
                     </div><!-- .dropdown-currency -->
                   </div><!-- .dropdown-content -->
                 </div><!-- .dropdown -->
-                <div class="dropdown navbar-btn navbar-btn-bordered">
-                  <span class="navbar-btn-header">My Booking</span>
-                  <div class="dropdown-content">
+                <div class="navbar-btn navbar-btn-bordered js-dropdown" data-dropdown-type="closing">
+                  <button class="navbar-btn-header js-dropdown-toggler">My Booking</button>
+                  <div class="dropdown-content js-dropdown-box">
                     <form class="my-booking-form" action="#">
                       <input class="my-booking-input" type="email" name="email" id="email" placeholder="Email used for reservation" />
                       <input class="my-booking-input" type="text" name="name" id="name" placeholder="Booking number" />
@@ -680,16 +697,10 @@
           </div>
         </div><!-- .row -->
       </div><!-- .container -->
-      <div class="hot-deals-carousel-wrap">
-        <div class="carousel-left-arrow">
-          <img src="img/arrow-left.png" alt="Left Arrow">
-        </div>
-        <div class="carousel-right-arrow">
-          <img src="img/arrow-right.png" alt="Right Arrow">
-        </div>
-        <div class="container-carousel">
-          <div class="carousel">
-            <div class="carousel-slide">
+      <div class="carousel js-carousel">
+        <div class="carousel-container js-carousel-container">
+          <div class="carousel-list js-carousel-list">
+            <div class="carousel-slide js-carousel-slide">
               <b class="car-name">Audi Q3</b>
               <img class="car-image" src="img/audi-q3.png" alt="Audi Q3" title="Audi Q3">
               <ins class="car-new-price">16,72 &euro;</ins>
@@ -697,7 +708,7 @@
               <button class="book-now-btn">Book now</button>
               <span class="car-location">at Malpensa Airport (MXP)</span>
             </div><!-- .carousel-slide -->
-            <div class="carousel-slide">
+            <div class="carousel-slide js-carousel-slide">
               <b class="car-name">Chevrolet Tahoe</b>
               <img class="car-image" src="img/chevrolet-tahoe.png" alt="Chevrolet Tahoe" title="Chevrolet Tahoe">
               <ins class="car-new-price">14,99 &euro;</ins>
@@ -705,30 +716,69 @@
               <button class="book-now-btn">Book now</button>
               <span class="car-location">at Airport Bergamo</span>
             </div><!-- .carousel-slide -->
-            <div class="carousel-slide no-deal">
+            <div class="carousel-slide no-deal js-carousel-slide">
               <b class="car-name">Skoda Octavia Scout</b>
               <img class="car-image" src="img/skoda-octavia.png" alt="Skoda Octavia Scout" title="Skoda Octavia Scout">
               <span class="car-price">18,42 &euro;</span>
               <button class="book-now-btn">Book now</button>
               <span class="car-location">at Airport Linate</span>
             </div><!-- .carousel-slide -->
-            <div class="carousel-slide no-deal">
+            <div class="carousel-slide no-deal js-carousel-slide">
               <b class="car-name">УАЗ Patriot</b>
               <img class="car-image" src="img/uaz-patriot.png" alt="УАЗ Patriot" title="УАЗ Patriot">
               <span class="car-price" class="carousel-rent-car-price">19,99 &euro;</span>
               <button class="book-now-btn">Book now</button>
               <span class="car-location">at Downtown</span>
             </div><!-- .carousel-slide -->
-            <div class="carousel-slide no-deal">
+            <div class="carousel-slide no-deal js-carousel-slide">
               <b class="car-name">Audi Q3</b>
               <img class="car-image" src="img/audi-q3.png" alt="Audi Q3" title="Audi Q3">
               <span class="car-price" class="carousel-rent-car-price">16,72 &euro;</span>
               <button class="book-now-btn">Book now</button>
               <span class="car-location">at Milan Exhibition Center</span>
             </div><!-- .carousel-slide -->
-          </div><!-- .row -->
-        </div><!-- .container-carousel -->
-      </div><!-- .hot-deals-carousel-wrap -->
+            <div class="carousel-slide no-deal js-carousel-slide">
+              <b class="car-name">Skoda Octavia Scout</b>
+              <img class="car-image" src="img/skoda-octavia.png" alt="Skoda Octavia Scout" title="Skoda Octavia Scout">
+              <span class="car-price">18,42 &euro;</span>
+              <button class="book-now-btn">Book now</button>
+              <span class="car-location">at Airport Linate</span>
+            </div><!-- .carousel-slide -->
+            <div class="carousel-slide no-deal js-carousel-slide">
+              <b class="car-name">УАЗ Patriot</b>
+              <img class="car-image" src="img/uaz-patriot.png" alt="УАЗ Patriot" title="УАЗ Patriot">
+              <span class="car-price" class="carousel-rent-car-price">19,99 &euro;</span>
+              <button class="book-now-btn">Book now</button>
+              <span class="car-location">at Downtown</span>
+            </div><!-- .carousel-slide -->
+            <div class="carousel-slide no-deal js-carousel-slide">
+              <b class="car-name">Audi Q3</b>
+              <img class="car-image" src="img/audi-q3.png" alt="Audi Q3" title="Audi Q3">
+              <span class="car-price" class="carousel-rent-car-price">16,72 &euro;</span>
+              <button class="book-now-btn">Book now</button>
+              <span class="car-location">at Milan Exhibition Center</span>
+            </div><!-- .carousel-slide -->
+            <div class="carousel-slide no-deal js-carousel-slide">
+              <b class="car-name">Skoda Octavia Scout</b>
+              <img class="car-image" src="img/skoda-octavia.png" alt="Skoda Octavia Scout" title="Skoda Octavia Scout">
+              <span class="car-price">18,42 &euro;</span>
+              <button class="book-now-btn">Book now</button>
+              <span class="car-location">at Airport Linate</span>
+            </div><!-- .carousel-slide -->
+            <div class="carousel-slide no-deal js-carousel-slide">
+              <b class="car-name">УАЗ Patriot</b>
+              <img class="car-image" src="img/uaz-patriot.png" alt="УАЗ Patriot" title="УАЗ Patriot">
+              <span class="car-price" class="carousel-rent-car-price">19,99 &euro;</span>
+              <button class="book-now-btn">Book now</button>
+              <span class="car-location">at Downtown</span>
+            </div><!-- .carousel-slide -->
+          </div><!-- .carousel-list -->
+          <div class="carousel-nav">
+            <button class="carousel-button-prev js-carousel-button" data-dir="prev"></button>
+            <button class="carousel-button-next js-carousel-button" data-dir="next"></button>
+          </div><!-- .carousel-nav -->
+        </div><!-- .carousel-container -->
+      </div><!-- .carousel -->
       <div class="container cf">
         <div class="row">
           <div class="col-1">
@@ -1350,6 +1400,9 @@
     </footer><!-- .footer -->
 
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/dropdowns.js"></script>
+    <script src="js/carousel.js"></script>
+
     <script type="text/javascript">
       $(document).ready(function(){
 

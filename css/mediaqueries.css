@@ -10,7 +10,9 @@
 
 }
 
-/* 640px and Up viewport displays */
+/*
+  640px and Up viewport displays
+*******************************************************************************/
 
 @media (max-width: 1024px) {
 
@@ -48,9 +50,9 @@
   /* Hide these elements */
 
   .likes-count-text,
-  .communication,
+  .navbar-btn-contact .phone-link,
+  .navbar-btn-contact .phone-text,
   .navbar-btn-contact::after,
-  .phone::after,
   .date-small,
   .header-benefits-item:nth-child(4n+4),
   .top-locations-item:nth-child(n+4),
@@ -88,6 +90,8 @@
   }
 
   .navbar-btn-contact {
+    width: 66px;
+    height: 36px;
     padding: 0;
     border-radius: 5px;
   }
@@ -109,15 +113,30 @@
     line-height: 1.5;
   }
 
+  .phone {
+    text-align: center;
+  }
+
   .navbar-btn-contact .dropdown-content {
     top: 130%;
     width: 640px;
     margin-left: -320px;
   }
 
+  .navbar-btn-contact .communication {
+    width: 100%;
+    height: 100%;
+  }
+
   .phone::before {
-    top: 0;
-    right: 61%;
+    top: -7px;
+    right: 56%;
+  }
+
+  .phone::after {
+    top: -6px;
+    right: 17px;
+    margin: 0;
   }
 
   .phone-text {
@@ -582,7 +601,9 @@
   }
 }
 
-/* 320px viewport displays */
+/*
+  320px viewport displays
+*******************************************************************************/
 
 @media (max-width: 680px) {
 
@@ -644,12 +665,12 @@
 
   .nav-menu-btn {
     display: block;
-    border: 1px solid #5f8aa6;
-    border-radius: 3px;
-    padding: 10px 9px;
     position: absolute;
     top: 15px;
     right: 15px;
+    padding: 10px 9px;
+    border: 1px solid #5f8aa6;
+    border-radius: 3px;
   }
 
   .nav-menu-btn:hover {
@@ -750,13 +771,13 @@
     text-align: left;
   }
 
-  .communication {
+  .dropdown-phones .communication {
     padding-bottom: 5px;
     border-bottom: 1px solid #ccc;
   }
 
   .phone:before {
-    left: 40px;
+    left: 7px;
   }
 
   /* Header */
