@@ -242,12 +242,12 @@
                     </div><!-- .dropdown-currency -->
                   </div><!-- .dropdown-content -->
                 </div><!-- .dropdown -->
-                <div class="navbar-btn navbar-btn-bordered js-dropdown" data-dropdown-type="closing">
+                <div class="navbar-btn navbar-btn-bordered js-dropdown">
                   <button class="navbar-btn-header js-dropdown-toggler">My Booking</button>
                   <div class="dropdown-content js-dropdown-box">
-                    <form class="my-booking-form" action="#">
-                      <input class="my-booking-input" type="email" name="email" id="email" placeholder="Email used for reservation" />
-                      <input class="my-booking-input" type="text" name="name" id="name" placeholder="Booking number" />
+                    <form class="navbar-form js-navbar-form" action="" novalidate>
+                      <input class="navbar-input" type="email" name="email" placeholder="Email used for reservation" required />
+                      <input class="navbar-input" type="text" name="booking-number" placeholder="Booking number" required />
                       <button class="my-booking-btn" type="submit">Sign in</button>
                     </form>
                   </div><!-- .dropdown-content -->
@@ -1402,27 +1402,24 @@
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="js/dropdowns.js"></script>
     <script src="js/carousel.js"></script>
+    <script src="js/validation.js"></script>
 
     <script type="text/javascript">
-      $(document).ready(function(){
+      $(".overlay-button").click(function(){
+        $(".layer").toggleClass("fixed-image");
+      });
 
-        $(".overlay-button").click(function(){
-          $(".layer").toggleClass("fixed-image");
-        });
+      $(".overlay-button-640").click(function(){
+        $(".layer").toggleClass("fixed-image-640");
+      });
 
-        $(".overlay-button-640").click(function(){
-          $(".layer").toggleClass("fixed-image-640");
-        });
+      $(".overlay-button-320").click(function(){
+        $(".layer").toggleClass("fixed-image-320");
+      });
 
-        $(".overlay-button-320").click(function(){
-          $(".layer").toggleClass("fixed-image-320");
-        });
-
-        $(".nav-menu-btn").click(function(){
-          $(".navbar-menu").toggleClass("display-navigation");
-          $(".header-navbar-wrap").toggleClass("navbar-fixed");
-        });
-
+      $(".nav-menu-btn").click(function(){
+        $(".navbar-menu").toggleClass("display-navigation");
+        $(".header-navbar-wrap").toggleClass("navbar-fixed");
       });
     </script>
   </body>

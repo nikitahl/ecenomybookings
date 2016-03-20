@@ -4,25 +4,25 @@ $(".js-dropdown").each(function(){
   		$dropdownToggler = $dropdown.find(".js-dropdown-toggler"),
   		$dropdownBox = $dropdown.find(".js-dropdown-box"),
   		dropdownType = $dropdown.data("dropdown-type"),
-  closeDropdown = function(e){
-		var $target = $(e.target),
-			  inBox = $target.closest($dropdownBox[0]).length,
-			  inButton = $target.closest($dropdownToggler[0]).length;
-        outside = (!inButton) ? (dropdownType !== "closing") ? (!inBox) ? true : false : true : false;
-    if(outside) {
-			$dropdown.removeClass("is-open");
-      $(document).unbind("click", closeDropdown );
-		}
-  },
-  openDropdown = function() {
-    if(!$dropdown.hasClass("is-open")){
-			$dropdown.addClass("is-open");
-			$(document).bind("click", closeDropdown);
-		} else {
-			$dropdown.removeClass("is-open");
-			$(document).unbind("click", closeDropdown);
-		}
-  };
+		  closeDropdown = function(e){
+				var $target = $(e.target),
+					  inBox = $target.closest($dropdownBox[0]).length,
+					  inButton = $target.closest($dropdownToggler[0]).length;
+		        outside = (!inButton) ? (dropdownType !== "closing") ? (!inBox) ? true : false : true : false;
+		    if(outside) {
+					$dropdown.removeClass("is-open");
+		      $(document).unbind("click", closeDropdown );
+				}
+		  },
+		  openDropdown = function() {
+		    if(!$dropdown.hasClass("is-open")){
+					$dropdown.addClass("is-open");
+					$(document).bind("click", closeDropdown);
+				} else {
+					$dropdown.removeClass("is-open");
+					$(document).unbind("click", closeDropdown);
+				}
+		  };
 	$dropdownToggler.on( "click", openDropdown );
 });
 
