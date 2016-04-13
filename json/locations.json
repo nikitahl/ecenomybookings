@@ -1,0 +1,72 @@
+{
+    "locations": [
+    {
+      "countryName": "Latvia",
+      "countryCode": "LVA",
+      "cities": {
+        "Riga": [
+          "Riga International Airport (RIX)",
+          "Riga Downtown"
+          "Coach Station",
+          "Central Railway Station",
+          "Ferry Terminal"
+        ],
+        "Ventspils": [
+          "Ventspils Downtown"
+          "Coach Station",
+          "Railway Station",
+          "Ferry Terminal"
+        ],
+        "Liepaja": [
+          "Liepaja Downtown"
+          "Coach Station",
+          "Ferry Terminal"
+        ]
+      }
+    },
+    {
+      "countryName": "Lithuania",
+      "countryCode": "LTU",
+      "cities": {
+        "Vilnius": [
+          "Vilnius Airport (VNO)",
+          "Vilnius Downtown",
+          "Coach Station",
+          "Central Railway Station",
+        ],
+        "Kaunas": [
+          "Kaunas International Airport (KUN)",
+          "Kaunas Downtown",
+          "Coach Station",
+          "Railway Station",
+        ],
+        "Klaipeda": [
+          "Klaipeda Downtown",
+          "Coach Station",
+          "Ferry Terminal"
+        ]
+      }
+    },
+    {
+      "countryName": "Estonia",
+      "countryCode": "EST",
+      "cities": {
+        "Tallin": [
+          "Tallin Airport (TLL)",
+          "Tallin Downtown",
+          "Coach Station",
+          "Central Railway Station",
+          "Ferry Terminal"
+        ],
+        "Parnu": [
+          "Parnu Downtown",
+          "Coach Station",
+        ],
+        "Tartu": [
+          "Tartu Downtown",
+          "Coach Station",
+        ]
+      }
+    }
+  ]
+}
