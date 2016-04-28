@@ -1,72 +1,125 @@
 {
-    "locations": [
-    {
-      "countryName": "Latvia",
-      "countryCode": "LVA",
-      "cities": {
-        "Riga": [
-          "Riga International Airport (RIX)",
-          "Riga Downtown"
-          "Coach Station",
-          "Central Railway Station",
-          "Ferry Terminal"
-        ],
-        "Ventspils": [
-          "Ventspils Downtown"
-          "Coach Station",
-          "Railway Station",
-          "Ferry Terminal"
-        ],
-        "Liepaja": [
-          "Liepaja Downtown"
-          "Coach Station",
-          "Ferry Terminal"
-        ]
-      }
-    },
-    {
-      "countryName": "Lithuania",
-      "countryCode": "LTU",
-      "cities": {
-        "Vilnius": [
-          "Vilnius Airport (VNO)",
-          "Vilnius Downtown",
-          "Coach Station",
-          "Central Railway Station",
-        ],
-        "Kaunas": [
-          "Kaunas International Airport (KUN)",
-          "Kaunas Downtown",
-          "Coach Station",
-          "Railway Station",
-        ],
-        "Klaipeda": [
-          "Klaipeda Downtown",
-          "Coach Station",
-          "Ferry Terminal"
-        ]
-      }
-    },
-    {
-      "countryName": "Estonia",
-      "countryCode": "EST",
-      "cities": {
-        "Tallin": [
-          "Tallin Airport (TLL)",
-          "Tallin Downtown",
-          "Coach Station",
-          "Central Railway Station",
-          "Ferry Terminal"
-        ],
-        "Parnu": [
-          "Parnu Downtown",
-          "Coach Station",
-        ],
-        "Tartu": [
-          "Tartu Downtown",
-          "Coach Station",
-        ]
-      }
-    }
-  ]
+	"countries": [
+		{
+			"countryName": "Australia",
+			"countryCode": "AUS",
+			"cities":
+			{
+				"Canberra":
+				{
+					"airport":
+					{
+						"code": "CBR",
+						"name": "Canberra Airport (CBR)"
+					},
+					"locations":
+					[
+						"Downtown",
+						"Railway Station"
+					]
+				},
+				"Melbourne":
+				{
+					"airport":
+					{
+						"code": "MEL",
+						"name": "Melbourne Airport (MEL)"
+					},
+					"locations":
+					[
+						"Downtown",
+						"Railway Station",
+						"Ferry Terminal"
+					]
+				},
+				"Sydney":
+				{
+					"airport":
+					{
+						"code": "SYD",
+						"name": "Sydney Airport (SYD)"
+					},
+					"locations":
+					[
+						"Downtown",
+						"Railway Station",
+						"Coach Station"
+					]
+				},
+				"Wollongong":
+				{
+					"airport":
+					{
+						"code": "WOL",
+						"name": "Illawarra Regional Airport (WOL)"
+					},
+					"locations":
+					[
+						"Downtown",
+						"Railway Station"
+					]
+				}
+			}
+		},
+		{
+			"countryName": "Austria",
+			"countryCode": "AUT",
+			"cities":
+			{
+				"Innsbruck":
+				{
+					"airport":
+					{
+						"code": "INN",
+						"name": "Innsbruck Airport (INN)"
+					},
+					"locations":
+					[
+						"Downtown",
+						"Railway Station"
+					]
+				},
+				"Salzburg":
+				{
+					"airport":
+					{
+						"code": "SZG",
+						"name": "Salzburg Airport (SZG)"
+					},
+					"locations":
+					[
+						"Downtown",
+						"Railway Station",
+						"Coach Station"
+					]
+				},
+				"Vienna":
+				{
+					"airport":
+					{
+						"code": "VIE",
+						"name": "Vienna International Airport (VIE)"
+					},
+					"locations":
+					[
+						"Downtown",
+						"Railway Station"
+					]
+				},
+				"Wolfsberg":
+				{
+					"airport":
+					{
+						"code": "(Wolfsberg Airport)",
+						"name": "Wolfsberg Airport"
+					},
+					"locations":
+					[
+						"Downtown",
+						"Railway Station"
+					]
+				}
+			}
+		}
+	]
 }
