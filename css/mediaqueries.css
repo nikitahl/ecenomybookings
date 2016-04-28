@@ -1,13 +1,9 @@
 @media (max-width: 1200px) {
 
-  .container-carousel {
+  .carousel-container {
     max-width: 910px;
   }
-
-  .carousel {
-    overflow: hidden;
-  }
-
+  
 }
 
 /*
@@ -20,7 +16,7 @@
     max-width: 640px;
   }
 
-  .container-carousel {
+  .carousel-container {
     max-width: 685px;
   }
 
@@ -50,8 +46,9 @@
   /* Hide these elements */
 
   .likes-count-text,
-  .navbar-btn-contact .phone-link,
-  .navbar-btn-contact .phone-text,
+  .communication-btn .phone-link,
+  .communication-btn .phone-text,
+  .communication-mob .phone::after,
   .navbar-btn-contact::after,
   .date-small,
   .header-benefits-item:nth-child(4n+4),
@@ -115,6 +112,12 @@
 
   .phone {
     text-align: center;
+  }
+
+  .communication-mob .phone::before {
+    top: -1px;
+    right: 61%;
+    color: #000;
   }
 
   .navbar-btn-contact .dropdown-content {
@@ -595,7 +598,7 @@
 
 @media (max-width: 810px) {
 
-  .container-carousel {
+  .carousel-container {
     max-width: 460px;
     overflow: hidden;
   }
@@ -611,7 +614,7 @@
     max-width: 320px;
   }
 
-  .container-carousel {
+  .carousel-container {
     max-width: 220px;
   }
 
@@ -641,8 +644,7 @@
   .all-locations-items:nth-child(n+2),
   .company-branches:last-child,
   .company-branches .flag:nth-child(n+7),
-  .select-option,
-  .lang-curr-btn {
+  .select-option {
     display: none;
   }
 
@@ -723,10 +725,10 @@
     display: block;
   }
 
-  .btn-mobile {
+  /*.btn-mobile {
     display: inline-block;
     vertical-align: middle;
-  }
+  }*/
 
   .select-mobile {
     display: inline-block;
