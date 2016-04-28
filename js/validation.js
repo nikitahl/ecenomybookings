@@ -1,16 +1,15 @@
-var $navbarForm = $(".js-navbar-form"),
-    $navbarFormInput = $navbarForm.find("input"),
+var $siteForm = $(".js-form"),
 
     emailFormat = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 
     emailValue = false,
     bookingNumberValue = false,
-    hideError = function(element){
-      var $formInput = $("[name=" + element + "]");;
+    hideError = function(element, form){
+      var $formInput = form.find("[name=" + element + "]");;
       $formInput.removeClass("is-empty");
     },
-    displayError = function(element) {
-      var $emptyInput = $("[name=" + element + "]");
+    displayError = function(element, form) {
+      var $emptyInput = form.find("[name=" + element + "]");
       $emptyInput.attr("placeholder", "Please fill out this field");
       $emptyInput.addClass("is-empty");
       return false;
@@ -22,10 +21,10 @@ var $navbarForm = $(".js-navbar-form"),
         return false;
       }
     },
-    validateEmail = function(el, email){
-      var $emailInput = $("[name=" + el + "]");
+    validateEmail = function(el, email, form){
+      var $emailInput = form.find("[name=" + el + "]");
       if ( emailFormat.test(email) ) {
-        hideError(el);
+        hideError(el, form);
         emailValue = true;
       } else {
         $emailInput.val('')
@@ -34,20 +33,20 @@ var $navbarForm = $(".js-navbar-form"),
         emailValue = false;
       }
     },
-    validateNumber = function(el, bookingNumber){
-      hideError(el);
+    validateNumber = function(el, bookingNumber, form){
+      hideError(el, form);
       bookingNumberValue = true;
     },
-    validateData = function(formData){
+    validateData = function(formData, form){
       $.each(formData, function(index, obj){
         var fieldName = obj.name,
             fieldValue = obj.value,
             fieldEmpty = fillCheck(fieldValue);
         if ( fieldEmpty ) {
-          if (fieldName === "email") { validateEmail(fieldName, fieldValue); }
-          if (fieldName === "booking-number") { validateNumber(fieldName, fieldValue); }
+          if (fieldName === "email") { validateEmail(fieldName, fieldValue, form); }
+          if (fieldName === "booking-number") { validateNumber(fieldName, fieldValue, form); }
         } else {
-          displayError(fieldName);
+          displayError(fieldName, form);
         }
       });
       if ( emailValue && bookingNumberValue) {
@@ -56,15 +55,15 @@ var $navbarForm = $(".js-navbar-form"),
         return false;
       }
     },
-    getFormData = function(){
-      var getData = $navbarForm.serializeArray(),
-          results = validateData(getData);
+    getFormData = function(form){
+      var getData = form.serializeArray(),
+          results = validateData(getData, form);
       if ( results ) {
         return getData;
       }
     };
 
-$navbarForm.on("submit", function(e){
+$siteForm.on("submit", function(e){
   e.preventDefault();
-  getFormData();
+  getFormData($(this));
 });
