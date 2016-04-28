@@ -43,3 +43,12 @@ $(".js-local").each(function(){
     }
   });
 });
+
+// Toggle navigation on mobile devices
+var $headerNavigation = $(".js-header-navigation"),
+		$mobileMenuToggler = $headerNavigation.find(".js-mobile-menu-toggler"),
+		$mobileMenuDropdown = $headerNavigation.find(".js-mobile-menu-dropdown");
+$mobileMenuToggler.click(function(){
+	$mobileMenuDropdown.toggleClass("display-navigation");
+	$headerNavigation.toggleClass("navbar-fixed");
+});
