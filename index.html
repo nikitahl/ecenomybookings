@@ -208,7 +208,7 @@
                 <div class="navbar-btn navbar-btn-bordered js-dropdown">
                   <button class="navbar-btn-header js-dropdown-toggler">My Booking</button>
                   <div class="dropdown-content js-dropdown-box">
-                    <form class="navbar-form js-form" action="" novalidate>
+                    <form class="navbar-form js-form" name="navbar" novalidate>
                       <input class="navbar-input" type="email" name="email" placeholder="Email used for reservation" required />
                       <input class="navbar-input" type="text" name="booking-number" placeholder="Booking number" required />
                       <button class="my-booking-btn" type="submit">Sign in</button>
@@ -265,20 +265,25 @@
                     <input class="location-input js-search-input" type="text" placeholder="City, Location, Airport Code">
                   </div>
                   <div class="start-date-wrap">
-                    <button class="start-date-btn" type="button" name="button">
-                      <span class="date-small">Dec 29</span>
-                      <span class="date-large">December 29</span>
+                    <button class="start-date-btn js-date-btn" type="button" data-trip-date="start-date">
+                      From
+                      <!-- <span class="date-small">Dec 29</span>
+                      <span class="date-large">December 29</span> -->
                     </button>
                   </div>
                   <div class="end-date-wrap">
-                    <button class="end-date-btn" type="button" name="button">
-                      <span class="date-small">Jan 11</span>
-                      <span class="date-large">January 11</span>
+                    <button class="end-date-btn js-date-btn" type="button" data-trip-date="end-date">
+                      To
+                      <!-- <span class="date-small">Jan 11</span>
+                      <span class="date-large">January 11</span> -->
                     </button>
                   </div>
                   <div class="show-prices-wrap">
                     <button class="show-prices-btn" type="button" name="button">Show Prices</button>
                   </div>
+
+<!-- Remove after JS calendar is complete -->
+
                   <div class="dropdown-content dropdown-calendar-wrap">
                     <div class="calendar-left-arrow">
                       <span class="fa fa-angle-left"></span>
@@ -492,6 +497,7 @@
                       </div><!-- .calendar-wrap -->
                     </div><!-- dropdown-calendar -->
                   </div><!-- .dropdown-content -->
+<!-- Remove after JS calendar is complete -->
 
                   <div class="dropdown-content dropdown-locations-wrap">
                     <div class="dropdown-locations dropdown-content-items">
@@ -1224,7 +1230,7 @@
                 <div class="info-block">
                   <h5 class="info-heading">Stay tuned</h5>
                   <span class="info-text">Subscribe to our latest news and offers</span>
-                  <form class="newsletter-form js-form" action="" novalidate>
+                  <form class="newsletter-form js-form" name="newsletter" novalidate>
                     <input class="email-input" type="email" name="email" placeholder="Your email" required>
                     <button class="my-booking-btn" type="submit">Subscribe</button>
                   </form>
@@ -1323,7 +1329,7 @@
                 </div>
                 <div class="category-wrap-large footer-form">
                   <div class="footer-newsletter">
-                    <form class="footer-form js-form" action="" novalidate>
+                    <form class="footer-form js-form" name="footer" novalidate>
                       <h5 class="form-heading">Subscribe to our best deals</h5>
                       <span class="footer-form-text">Car hire at half-price.</span>
                       <span class="footer-form-text">Subscribe to our Exclusive Offers.</span>
@@ -1409,8 +1415,8 @@
     <script src="js/dropdowns.js"></script>
     <script src="js/carousel.js"></script>
     <script src="js/validation.js"></script>
-    <!-- script src="js/calendar.js"></script>
-    <script src="js/datepicker.js"></script -->
+    <script src="js/calendar.js"></script>
+    <script src="js/datepicker.js"></script>
     <script src="js/autocomplete.js"></script>
 
     <script type="text/javascript">

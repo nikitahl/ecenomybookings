@@ -584,6 +584,7 @@ button {
 
 .navbar-form {
   border: none;
+  line-height: 1.5;
 }
 
 .navbar-input {
@@ -607,6 +608,13 @@ button {
 
 .my-booking-btn:hover {
   background-color: #0089d8;
+}
+
+.error-msg {
+  position: relative;
+  top: -10px;
+  color: #d40707;
+  font-size: 1.4rem;
 }
 
 
@@ -2336,21 +2344,21 @@ button {
   border: 1px solid transparent;
 }
 
-.is-empty::-webkit-input-placeholder {
+/*.is-empty::-webkit-input-placeholder {
   color: #d40707;
 }
 
-.is-empty:-moz-placeholder { /* Firefox 18- */
+.is-empty:-moz-placeholder {
   color: #d40707;
 }
 
-.is-empty::-moz-placeholder {  /* Firefox 19+ */
+.is-empty::-moz-placeholder {
   color: #d40707;
 }
 
 .is-empty:-ms-input-placeholder {
   color: #d40707;
-}
+}*/
 
 /*.is-open {
   display: block;

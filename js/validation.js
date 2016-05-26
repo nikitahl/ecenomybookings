@@ -2,64 +2,99 @@ var $siteForm = $(".js-form"),
 
     emailFormat = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 
-    emailValue = false,
-    bookingNumberValue = false,
-    hideError = function(element, form){
-      var $formInput = form.find("[name=" + element + "]");;
+    siteForms = {},
+    errors,
+    FormElementData = function(elName, val, form) {
+      this.inputName = elName;
+      this.inputValue = val;
+      this.formWrap = form;
+      this.element = $(form).find("[name=" + elName + "]")
+      this.emptyInput = false;
+      this.isInvalid = false;
+      this.errors = false;
+    },
+    hideError = function(data){
+      var $formInput = data.element;
+      var $errorMessage = $formInput.next(".error-msg");
       $formInput.removeClass("is-empty");
+      $errorMessage.remove();
+      data.emptyInput = false;
+      data.errors = false;
     },
-    displayError = function(element, form) {
-      var $emptyInput = form.find("[name=" + element + "]");
-      $emptyInput.attr("placeholder", "Please fill out this field");
-      $emptyInput.addClass("is-empty");
-      return false;
-    },
-    fillCheck = function(val){
-      if ( val.trim() ) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    validateEmail = function(el, email, form){
-      var $emailInput = form.find("[name=" + el + "]");
-      if ( emailFormat.test(email) ) {
-        hideError(el, form);
-        emailValue = true;
-      } else {
-        $emailInput.val('')
-        $emailInput.addClass("is-empty");
-        $emailInput.attr("placeholder", "Please enter correct email");
-        emailValue = false;
-      }
-    },
-    validateNumber = function(el, bookingNumber, form){
-      hideError(el, form);
-      bookingNumberValue = true;
-    },
-    validateData = function(formData, form){
-      $.each(formData, function(index, obj){
-        var fieldName = obj.name,
-            fieldValue = obj.value,
-            fieldEmpty = fillCheck(fieldValue);
-        if ( fieldEmpty ) {
-          if (fieldName === "email") { validateEmail(fieldName, fieldValue, form); }
-          if (fieldName === "booking-number") { validateNumber(fieldName, fieldValue, form); }
-        } else {
-          displayError(fieldName, form);
+    validateEmail = function(data) {
+      var inputData = data,
+          $el = inputData.element
+          inputValue = data.inputValue;
+
+      if ( emailFormat.test(inputValue) ) {
+        if (inputData.isInvalid) {
+          hideError(inputData);
+          inputData.isInvalid = false;
         }
-      });
-      if ( emailValue && bookingNumberValue) {
-        return true;
-      } else {
-        return false;
+        return;
+      } else if (!inputData.isInvalid) {
+        $el.addClass("is-empty");
+        $el.after("<span class='error-msg'>Please enter correct email</span>");
+        inputData.isInvalid = true;
+        inputData.errors = true;
+      }
+    },
+    validateValue = function(data){
+      var inputName = data.inputName;
+      if (inputName === "email") {
+        validateEmail(data);
+      }
+    },
+    displayError = function(data) {
+      var $emptyInput = data.element;
+      $emptyInput.addClass("is-empty");
+      $emptyInput.after("<span class='error-msg'>Please fill out this field</span>");
+      data.emptyInput = true;
+      data.errors = true;
+    },
+    validateData = function(data){
+      for (var i = 0; i < data.length; i++) {
+        if ( !data[i].inputValue.trim() ) {
+          if (!data[i].emptyInput) {
+            displayError(data[i]);
+          }
+        } else {
+          if (data[i].emptyInput) {
+            hideError(data[i]);
+          }
+          validateValue(data[i]);
+        }
+        if (data[i].errors) {
+          errors += 1;
+        }
       }
     },
     getFormData = function(form){
-      var getData = form.serializeArray(),
-          results = validateData(getData, form);
-      if ( results ) {
-        return getData;
+      var getFormFields = form.serializeArray();
+      var formName = form.attr("name");
+      var storeElementData = [];
+      errors = 0;
+
+      if (siteForms.hasOwnProperty(formName)) {
+        var formData = siteForms[formName];
+        for (var i = 0; i < formData.length; i++) {
+          if (formData[i].inputName === getFormFields[i].name) {
+            formData[i].inputValue = getFormFields[i].value;
+          }
+        }
+      } else {
+        storeElementData.length = 0;
+        $.each(getFormFields, function(i, obj) {
+          var inputData = new FormElementData(obj.name, obj.value, form);
+          storeElementData.push(inputData);
+        });
+        siteForms[formName] = storeElementData;
+      }
+
+      validateData(siteForms[formName]);
+
+      if ( errors === 0 ) {
+        return getFormFields;
       }
     };
 

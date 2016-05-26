@@ -1,8 +1,9 @@
 # economybookings
 
 
-Webskola PSD to HTML/CSS project.
+## Project for http://webskola.lv
 
+Layout. Plain HTML and CSS.
 
 * Media queries for responsive web design;
 
@@ -10,7 +11,17 @@ Webskola PSD to HTML/CSS project.
 
 * Two breakpoints: 1024px, 680px;
 
-* Functionality - jQuery.
+
+Functionality - jQuery and JavaScript.
+
+* Form validation
+
+* Menu buttons dropdown with value change
+
+* Carousel slider
+
+* Autocomplete
 
 
+Preview:
 http://nikitahl.github.io/economybookings/
