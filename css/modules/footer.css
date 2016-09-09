@@ -1,0 +1,144 @@
+/* Footer */
+
+.footer {
+  background-color: #555;
+  color: #f6f6f6;
+}
+
+.footer-main {
+  padding: 33px 0 26px;
+}
+
+.footer-categories {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.footer-heading {
+  font-size: 1.7rem;
+  margin-bottom: 15px;
+  color: #c7c7c7;
+}
+
+.category-wrap {
+  -webkit-box-flex: 2;
+  -webkit-flex: 2 0 0%;
+      -ms-flex: 2 0 0%;
+          flex: 2 0 0%;
+}
+
+.category-wrap-large {
+  -webkit-box-flex: 4;
+  -webkit-flex: 4 0 0%;
+      -ms-flex: 4 0 0%;
+          flex: 4 0 0%;
+}
+
+.category-wrap-small {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 0 0%;
+      -ms-flex: 1 0 0%;
+          flex: 1 0 0%;
+}
+
+.footer-item {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  line-height: 2;
+  font-size: 1.2rem;
+}
+
+.footer-item:hover {
+  text-decoration: underline;
+}
+
+.footer-icon {
+  color: #c7c7c7;
+  text-decoration: none;
+  font-size: 3rem;
+  display: block;
+  margin: 0 0 25px;
+}
+
+.footer-newsletter {
+  padding: 12px 18px 23px;
+  background-color: #444;
+}
+
+.form-heading {
+  color: #f6f6f6;
+  font-size: 1.6rem;
+  margin-bottom: 5px;
+}
+
+.footer-form-text {
+  font-size: 1.2rem;
+  display: block;
+  color: #ccc;
+}
+
+.footer-form-email {
+  margin: 13px 0;
+  padding: 8px;
+  border: none;
+  width: 100%;
+  color: #b0b0b0;
+}
+
+.footer-form-btn {
+  border-radius: 4px;
+  color: #fff;
+  background-color: #f2a622;
+  padding: 9px;
+  width: 100%;
+  font-size: 1.4rem;
+}
+
+/* Pre Footer */
+
+.pre-footer {
+  background-color: #444;
+}
+
+.news-source {
+  margin: 31px 0;
+}
+
+/* Sub Footer */
+
+.sub-footer {
+  background: url(../../img/footer-pattern-bg.png);
+  color: #f6f6f6;
+  padding: 29px 0;
+}
+
+.legal-text {
+  font-size: 1.2rem;
+  color: #898989;
+}
+
+.get-app {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-around;
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
+}
+
+.footer .security-logo {
+  float: right;
+}
+
+.get-app-small,
+.footer-select {
+  display: none;
+}

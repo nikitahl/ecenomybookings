@@ -7,7 +7,7 @@
   height: 4697px;
   opacity: .5;
   z-index: 1000;
-  background: url(../img/economybookings.png) top center no-repeat;
+  background: url(../../img/economybookings.png) top center no-repeat;
 }
 
 .overlay-button {
@@ -30,7 +30,7 @@
   height: 5000px;
   opacity: .5;
   z-index: 1000;
-  background: url(../img/640.png) top center no-repeat;
+  background: url(../../img/640.png) top center no-repeat;
 }
 
 .overlay-button-640 {
@@ -54,7 +54,7 @@
   height: 6500px;
   opacity: .5;
   z-index: 1000;
-  background: url(../img/320.png) top center no-repeat;
+  background: url(../../img/320.png) top center no-repeat;
 }
 
 .overlay-button-320 {

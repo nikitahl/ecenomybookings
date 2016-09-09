@@ -1,0 +1,65 @@
+/* Other Cities */
+
+.other-cities {
+  background-color: #f6f6f6;
+  padding: 26px;
+}
+
+.other-cities-heading {
+  font-size: 1.8rem;
+  font-weight: bold;
+  padding-bottom: 14px;
+  border-bottom: 4px solid #ddd;
+}
+
+.other-links-list {
+  line-height: 2.8;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-align-content: space-between;
+      -ms-flex-line-pack: justify;
+          align-content: space-between;
+  height: 200px;
+  border-bottom: 1px solid #ddd;
+}
+
+.other-links-item {
+  width: 220px;
+  border-bottom: 1px solid #ddd;
+  font-size: 1.4rem;
+  line-height: 39px;
+}
+
+.other-links-item:nth-child(5n+5) {
+  border: none;
+}
+
+.city-link {
+  text-decoration: none;
+  color: #444;
+}
+
+.city-link:hover,
+.other-cities .all-cities:hover {
+  text-decoration: underline;
+}
+
+.other-cities .all-cities-wrap {
+  padding: 15px 0 0;
+}
+
+.other-cities .all-cities {
+  text-decoration: none;
+  font-size: 1.3rem;
+  color: #666;
+}

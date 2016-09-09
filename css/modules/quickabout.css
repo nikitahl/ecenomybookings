@@ -1,0 +1,196 @@
+/* Quick About */
+
+.quick-about {
+  padding: 32px 0 35px;
+}
+
+.quick-about-heading {
+  text-align: center;
+  font-size: 3.2rem;
+  color: #777;
+  padding: 0 0 24px;
+  border-bottom: 4px solid #ddd;
+}
+
+/* Why us and review */
+
+.why-us {
+  font-size: 2.3rem;
+  color: #333;
+  margin: 20px 0 23px;
+}
+
+.book-reasons {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+}
+
+.reason-list-wrap {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 0 0%;
+      -ms-flex: 1 0 0%;
+          flex: 1 0 0%;
+  margin: 0 20px 0;
+}
+
+.reason-list-wrap:first-child {
+  margin-left: 0px;
+}
+
+.reason-item {
+  padding: 0 0 20px 36px;
+  font-size: 1.5rem;
+  position: relative;
+}
+
+.reason-item::before {
+  position: absolute;
+  content: '\f00c';
+  font-family: 'FontAwesome';
+  font-size: 2.5rem;
+  color: #0073b5;
+  top: -2px;
+  left: 0;
+}
+
+.security-logo {
+  width: 117px;
+}
+
+.quick-review {
+  margin: 30px 0 20px 20px;
+  border: 1px dashed #aaa;
+  padding: 10px 20px 16px;
+}
+
+.reviewer-name {
+  float: left;
+}
+
+.star-rating {
+  position: relative;
+  float: right;
+  width: 61px;
+  height: 13px;
+}
+
+.star-rating::before {
+  position: absolute;
+  content: '\f005 \f005 \f005 \f005 \f005';
+  font-family: 'FontAwesome';
+  font-size: 1.3rem;
+  color: #ffcd4a;
+  /*right: 100%;*/
+  top: 4px;
+}
+
+.reviewer-text {
+  margin: 10px 0;
+  font-size: 1.3rem;
+}
+
+.reviewer-more .read-more {
+  float: left;
+  font-size: 1.3rem;
+  color: #2286bf;
+}
+
+.review-centre {
+  width: 140px;
+  float: right;
+}
+
+.lower {
+  margin: 15px 0 0;
+}
+
+/*.quick-about .row:last-child {
+  margin: 15px 0 0;
+}*/
+
+/* Info */
+
+.info-block {
+  background-color: #eee;
+  padding: 20px 30px;
+  text-align: center;
+  min-height: 204px;
+}
+
+.info-block-darken {
+  background-color: #ddd;
+}
+
+.info-heading {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #444;
+  margin-bottom: 5px;
+}
+
+.info-link {
+  color: #0073b5;
+}
+
+.info-link:hover {
+  text-decoration: none;
+}
+
+.info-block .my-booking-btn {
+  margin: 27px 0 20px;
+}
+
+.info-phone {
+  color: #0073b5;
+  text-decoration: none;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.info-social {
+  margin-top: 11px;
+  padding-top: 11px;
+  border-top: 1px dashed #aaa;
+}
+
+.info-text {
+  white-space: nowrap;
+}
+
+.social-text {
+  display: block;
+  font-size: 1.5rem;
+  color: #777;
+  margin-bottom: 15px;
+}
+
+.social-icon {
+  font-size: 3.5rem;
+  color: #777;
+  text-decoration: none;
+  margin: 0 8px;
+}
+
+.newsletter-form {
+  margin: 10px 0 0;
+}
+
+.newsletter-form .my-booking-btn {
+  margin: 15px 0 0;
+}
+
+.newsletter-form .error-msg {
+  top: 5px;
+}
+
+.email-input {
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 11px;
+  font-size: 1.5rem;
+}

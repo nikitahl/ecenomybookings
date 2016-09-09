@@ -1,0 +1,444 @@
+/* Header navbar */
+
+.header-navbar-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 22;
+  box-shadow: 0 1px 4px 1px #4e4e4e;
+  background-color: #1a5880;
+  color: #fff;
+}
+
+.header-navbar {
+  position: relative;
+}
+
+
+/* Brand link */
+
+.navbar-brand {
+  float: left;
+}
+
+.navbar-brand-logo {
+  width: 173px;
+  padding: 19px 0;
+  float: left;
+}
+
+
+/* Main Navigation menu */
+
+.navbar-menu {
+  width: 75%;
+  float: right;
+  font-size: 1.2rem;
+}
+
+/* Like link in main navigation */
+
+.likes-count {
+  float: left;
+  padding: 23px 0 13px;
+}
+
+.heart {
+  position: relative;
+  color: #bacdd9;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.heart::before {
+  content: "\f004";
+  position: absolute;
+  top: 3px;
+  left: -22px;
+  font-family: 'FontAwesome';
+  color: #bacdd9;
+}
+
+.menu-wrap {
+  float: right;
+}
+
+.nav-menu-btn {
+  display: none;
+}
+
+.navbar-btn {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.navbar-btn button {
+  font-size: 12px;
+}
+
+.communication,
+.navbar-btn-bordered button {
+  color: #fff;
+}
+
+.communication {
+  /*padding: 0;*/
+  padding: 19px 52px 10px;
+  line-height: 1.2;
+}
+
+.navbar-btn-header {
+  display: block;
+  padding: 10px 14px;
+  text-decoration: none;
+  border-radius: 5px;
+  -webkit-transition: background-color .3s ease;
+          transition: background-color .3s ease;
+}
+
+.navbar-btn-header:hover {
+  background-color: #133f5c;
+  cursor: pointer;
+}
+
+
+/* Contact by phone button */
+
+.navbar-btn-contact {
+  /*padding: 19px 52px 10px;*/
+  border-radius: 0;
+  -webkit-transition: background-color .3s ease;
+          transition: background-color .3s ease;
+}
+
+.navbar-btn-contact::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 99%;
+  height: 30px;
+  width: 1px;
+  margin-top: -15px;
+  background-color: rgba(255,255,255,0.5);
+}
+
+.navbar-btn-contact:hover {
+  background-color: #133f5c;
+  cursor: pointer;
+}
+
+.navbar-btn-contact:hover.navbar-btn-contact::after {
+  background-color: #133f5c;
+}
+
+.phone,
+.phone-text {
+  display: block;
+}
+
+.phone {
+  position: relative;
+  font-size: 1.5rem;
+  text-align: right;
+  min-height: 20px; /* IE fix */
+}
+
+.phone::before {
+  content: "\f095";
+  position: absolute;
+  top: 2px;
+  left: -17px;
+  font-family: 'FontAwesome';
+  /*font-size: 1.7rem;*/
+  font-size: 17px;
+}
+
+.phone::after {
+  content:' \f107';
+  position: absolute;
+  /*font-size: 1.3rem;*/
+  font-size: 13px;
+  top: 50%;
+  display: inline-block;
+  margin-top: -3px;
+  margin-left: 12px;
+  font-family: 'Fontawesome';
+}
+
+.phone-link {
+  color: #fff;
+  text-decoration: none;
+}
+
+.phone-text {
+  color: #bacdd9;
+  font-size: 1.1rem;
+  min-height: 15px; /* IE fix */
+}
+
+.navbar-btn-communication {
+  display: none;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+
+/* Currency, language and login buttons */
+
+
+/* Down arrow in the pseudo element */
+
+.navbar-btn-header::after {
+  content:' \f107';
+  position: relative;
+  display: inline-block;
+  margin-left: 15px;
+  font-family: 'Fontawesome';
+}
+
+
+/* bordered menu button */
+
+.navbar-btn-bordered {
+  margin-left: 20px;
+}
+
+.navbar-btn-bordered .navbar-btn-header:hover {
+  border: 1px solid  #133f5c;
+}
+
+.navbar-btn-bordered .navbar-btn-header {
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+
+/* dropdown */
+
+.navbar-btn .dropdown-content {
+  border-radius: 3px;
+  box-shadow: 0px 2px 5px 1px #b7b7b7;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  position: absolute;
+  z-index: 5;
+  display: none;
+  padding: 7px 0;
+  background-color: #fff;
+  line-height: 2.5;
+  color: #333;
+}
+
+.navbar-menu .dropdown-content {
+  width: 240px; /* width from PSD */
+  top: 130%;
+  left: 50%;
+  margin-left: -120px;
+}
+
+.navbar-btn-bordered .dropdown-content {
+  right: 0; /* align dropdown content by the right side of the bordered button */
+  top: 127%;
+  left: auto;
+  padding: 22px;
+}
+
+.navbar-btn-contact .dropdown-content {
+  top: 110%;
+  width: 540px;
+  left: 50%;
+  margin-left: -270px;
+}
+
+
+/* pointing arrow for dropdown-content box + hover area */
+
+.dropdown-content::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -4px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 6px solid #fff;
+}
+
+.navbar-btn-bordered .dropdown-content::before {
+  margin-left: 0;
+  left: auto;
+  right: 50px;
+}
+
+.dropdown-content::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 10px;
+  width: 100%;
+}
+
+
+/* flexboxes in dropdown menu */
+
+.dropdown-content-flex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+}
+
+.company-branches,
+.languages {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 0 0%;
+      -ms-flex: 1 0 0%;
+          flex: 1 0 0%;
+}
+
+
+/* menu items (currency and languages) in dropdown menu */
+
+.dropdown-content .dropdown-navbar-items {
+  line-height: 2.5;
+}
+
+.dropdown-navbar-items {
+  display: block;
+  padding: 0 22px;
+  text-decoration: none;
+  color: inherit;
+  -webkit-transition: background-color .3s , color .3s;
+          transition: background-color .3s , color .3s;
+}
+
+.dropdown-navbar-items:hover {
+  background-color: #1a587f;
+  color: #fff;
+  cursor: pointer;
+}
+
+.navbar-btn-lang-curr {
+  color: rgba(255,255,255,0.8);
+}
+
+/* currency in dropdown */
+
+.dropdown-navbar-items {
+  width: 100%;
+  text-align: left;
+}
+
+.currency {
+  float: right;
+  text-align: right;
+  color: #1a5880;
+}
+
+.dropdown-navbar-items:hover .currency {
+  color: #fff;
+}
+
+
+/* phone in dropdown */
+
+.dropdown-phones .communication {
+  display: none;
+}
+
+.country-phone {
+  float: right;
+  font-weight: normal;
+}
+
+.country-phone-link {
+  color: rgb(51, 51, 51);
+  text-decoration: none;
+}
+
+.flag {
+  position: relative;
+  font-weight: bold;
+  padding: 0 22px 0 40px;
+  cursor: auto;
+}
+
+.por::before,
+.ned::before,
+.lat::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  width: 18px;
+  height: 10px;
+  margin-top: -5px;
+  background-size: 20px 10px;
+}
+
+.por::before{
+  background-image: url(../../img/por-flag.png);
+}
+
+.ned::before {
+  background-image: url(../../img/ned-flag.png);
+}
+
+.lat::before {
+  background-image: url(../../img/lat-flag.png);
+}
+
+
+/* right border in the dropdown menu */
+
+.flag,
+.dropdown-right-border .dropdown-navbar-items {
+  border-right: 1px solid lightgray;
+}
+
+
+/* form in the dropdown */
+
+.navbar-form {
+  border: none;
+  line-height: 1.5;
+}
+
+.navbar-input {
+  margin-bottom: 15px;
+  padding: 7px 5px;
+  width: 100%;
+  border: 1px solid #CCCCCC
+}
+
+.my-booking-btn {
+  width: 100%;
+  margin-bottom: 0;
+  padding: 12px;
+  border-radius: 3px;
+  background-color: #0073b5;
+  color: #fff;
+  font-size: 1.6rem;
+  -webkit-transition: background-color .5s;
+          transition: background-color .5s;
+}
+
+.my-booking-btn:hover {
+  background-color: #0089d8;
+}
+
+.error-msg {
+  position: relative;
+  top: -10px;
+  color: #d40707;
+  font-size: 1.4rem;
+}

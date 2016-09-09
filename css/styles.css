@@ -1,6 +1,38 @@
-/* Preprocessor like imports. Divided into separate files for easier access and editing */
-@import "reset.css";
-@import "fonts.css";
-@import "main.css";
-@import "mediaqueries.css";
-@import "debug.css"
+/**
+  Preprocessor like imports.
+  Divided into separate files for easier access and maintainability
+*/
+
+/* Base */
+@import "base/reset.css";
+@import "base/base.css";
+
+/* Fonts */
+@import "fonts/fonts.css";
+
+/* Layout */
+@import "layout/layout.css";
+
+/* Modules */
+@import "modules/navbar.css";
+@import "modules/header.css";
+@import "modules/calendar.css";
+@import "modules/autocomplete.css";
+@import "modules/hotdeals.css";
+@import "modules/reviews.css";
+@import "modules/othercities.css";
+@import "modules/partners.css";
+@import "modules/quickabout.css";
+@import "modules/mobileapps.css";
+@import "modules/footer.css";
+
+/* State */
+@import "state/state.css";
+
+/* Media queries */
+@import "media/desktop.css";
+@import "media/tablet.css";
+@import "media/mobile.css";
+
+/* Debug styles*/
+@import "other/debug.css"

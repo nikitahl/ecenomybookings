@@ -1,0 +1,44 @@
+/* Partners */
+
+.partners {
+  background-color: #d8e9f2;
+  padding: 0 0 40px;
+  height: 278px; /* temporarty, delete this */
+}
+
+.partners-heading {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 23px 0 11px;
+  color: #1a5880;
+}
+
+.partner-info .rating-score {
+  width: 90px;
+  height: 90px;
+  text-align: center;
+  margin: 22px auto 15px;
+}
+
+.partner-info .outer-circle {
+  stroke: #dfdfdf;
+  fill: #fff;
+}
+
+.partner-info .inner-circle {
+  fill: #f6f6f6;
+  stroke: #dfdfdf;
+}
+
+.partners-brands {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}

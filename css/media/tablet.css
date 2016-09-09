@@ -1,11 +1,3 @@
-@media (max-width: 1200px) {
-
-  .carousel-container {
-    max-width: 910px;
-  }
-  
-}
-
 /*
   640px and Up viewport displays
 *******************************************************************************/
@@ -115,8 +107,8 @@
   }
 
   .communication-mob .phone::before {
-    top: -1px;
-    right: 61%;
+    top: 0;
+    right: 22%;
     color: #000;
   }
 
@@ -129,16 +121,17 @@
   .navbar-btn-contact .communication {
     width: 100%;
     height: 100%;
+    padding: 0;
   }
 
   .phone::before {
-    top: -7px;
-    right: 56%;
+    top: 2px;
+    right: 7%;
   }
 
   .phone::after {
-    top: -6px;
-    right: 17px;
+    top: 3px;
+    right: 18px;
     margin: 0;
   }
 
@@ -153,7 +146,7 @@
   /* Header search */
 
   .header-search {
-    padding: 109px 0 31px;
+    padding: 90px 0 31px;
   }
 
   .site-headline {
@@ -482,6 +475,7 @@
   }
 
   .footer-form {
+    position: relative;
     -webkit-box-ordinal-group: 2;
     -webkit-order: 1;
         -ms-flex-order: 1;
@@ -489,6 +483,13 @@
     -webkit-flex-basis: 100%;
         -ms-flex-preferred-size: 100%;
             flex-basis: 100%;
+  }
+
+  .footer-form .error-msg {
+    position: absolute;
+    top: initial;
+    bottom: 0;
+    left: 0;
   }
 
   .footer-company {
@@ -602,507 +603,4 @@
     max-width: 460px;
     overflow: hidden;
   }
-}
-
-/*
-  320px viewport displays
-*******************************************************************************/
-
-@media (max-width: 680px) {
-
-  .container {
-    max-width: 320px;
-  }
-
-  .carousel-container {
-    max-width: 220px;
-  }
-
-  .col-sm-1 {
-    width: 100%;
-  }
-
-  .col-sm-1 {
-    float: left;
-  }
-
-  /* Hide these elements */
-
-  .site-headline .rating-score,
-  .header-search .row:last-child,
-  .date-large,
-  .end-date-btn::after,
-  .show-prices-btn::before,
-  .top-locations-item:not(.all-top-locations),
-  .partner-info:nth-child(n+3),
-  .smartphone,
-  .footer-company,
-  .footer-useful,
-  .footer-help,
-  .footer-partners,
-  .dropdown-calendar .calendar-wrap:nth-child(n+2),
-  .all-locations-items:nth-child(n+2),
-  .company-branches:last-child,
-  .company-branches .flag:nth-child(n+7),
-  .select-option {
-    display: none;
-  }
-
-  /* Navigation */
-
-  .navbar-fixed {
-    position: fixed;
-  }
-
-  .navbar-menu {
-    display: none;
-    position: fixed;
-    margin: 13px 0;
-    background-color: #133f5c;
-    top: 51px;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .nav-menu-btn {
-    display: block;
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    padding: 10px 9px;
-    border: 1px solid #5f8aa6;
-    border-radius: 3px;
-  }
-
-  .nav-menu-btn:hover {
-    background-color: #133f5c;
-    cursor: pointer;
-  }
-
-  .menu-btn {
-    width: 17px;
-    height: 2px;
-    background-color: #fff;
-    margin-bottom: 4px;
-    display: block;
-  }
-
-  .menu-btn:last-child {
-    margin: 0;
-  }
-
-  .menu-wrap {
-    border-bottom: 1px solid #2b536d;
-    padding-bottom: 10px;
-  }
-
-  .menu-wrap,
-  .likes-count {
-    float: none;
-    text-align: center;
-    width: 310px;
-    margin: 10px auto;
-  }
-
-  .likes-count-text {
-    display: inherit;
-  }
-
-  .navbar-btn-header {
-    padding: 9px 10px;
-  }
-
-  .navbar-btn-bordered {
-    margin-left: 0;
-  }
-
-  .navbar-btn-header:hover {
-    background-color: #142a3c;
-  }
-
-  .display-navigation {
-    display: block;
-  }
-
-  /*.btn-mobile {
-    display: inline-block;
-    vertical-align: middle;
-  }*/
-
-  .select-mobile {
-    display: inline-block;
-    opacity: 0;
-  	position: absolute;
-  	z-index: -1;
-  }
-
-  /* Dropdown in Navigation */
-
-  .navbar-btn-bordered .navbar-btn-header,
-  .navbar-btn-bordered .navbar-btn-header:hover {
-    border: none;
-  }
-
-  .navbar-btn-bordered .dropdown-content {
-    width: 290px;
-  }
-
-  .navbar-btn-contact .dropdown-content {
-    width: 290px;
-    margin: 0;
-    left: -6px;
-  }
-
-  .navbar-btn-lang-curr .dropdown-content {
-    width: 290px;
-    left: 50px;
-  }
-
-  .navbar-btn-lang-curr .dropdown-content::before {
-    left: 100px;
-  }
-
-  .navbar-btn-contact .dropdown-content::before {
-    margin: 0;
-    left: 25px;
-  }
-
-  .company-branches .flag {
-    border: none;
-    text-align: left;
-  }
-
-  .dropdown-phones .communication {
-    padding-bottom: 5px;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .phone:before {
-    left: 7px;
-  }
-
-  /* Header */
-
-  .header-search {
-    padding: 60px 0 86px;
-  }
-
-  .site-headline {
-    font-size: 2.4rem;
-    width: 65%;
-    margin: 0 auto 14px;
-    line-height: 1.2;
-  }
-
-  .site-description {
-    font-size: 1.2rem;
-    margin: 0;
-  }
-
-  /* Header searchform */
-
-  .header-searchform-wrap {
-    border-radius: 0;
-    margin: 27px 0 16px;
-    padding: 18px 20px;
-  }
-
-  .rent-brand-wrap {
-    -webkit-box-flex: 3;
-    -webkit-flex-grow: 3;
-        -ms-flex-positive: 3;
-            flex-grow: 3;
-  }
-
-  .start-date-wrap,
-  .end-date-wrap {
-    -webkit-box-flex: 2;
-    -webkit-flex: 2 0 4%;
-        -ms-flex: 2 0 4%;
-            flex: 2 0 4%;
-  }
-
-  .end-date-wrap {
-    margin: 0;
-  }
-
-  .header-searchform,
-  .show-prices-btn {
-    border-radius: 4px;
-  }
-
-  .show-prices-wrap {
-    -webkit-flex-basis: 100%;
-        -ms-flex-preferred-size: 100%;
-            flex-basis: 100%;
-    height: 48px;
-    margin-top: 2px;
-  }
-
-  .date-small {
-    display: inline;
-  }
-
-  /* Searchform Dropdown */
-
-  .dropdown-calendar-wrap::before,
-  .dropdown-calendar::before {
-    left: 150px;
-  }
-
-  .header-searchform .dropdown-content {
-    top: 46px;
-    width: 100%;
-    left: 0;
-  }
-
-  .header-searchform .dropdown-calendar-wrap {
-    top: 92px;
-  }
-
-  .dropdown-locations-wrap::before,
-  .dropdown-cities-wrap::before,
-  .dropdown-autocomplete-wrap::before,
-  .dropdown-autocomplete-alternative-wrap::before {
-    left: 50%;
-  }
-
-  .dropdown-top-locations .dropdown-searchform-btn {
-    -webkit-box-flex: 1;
-    -webkit-flex: 1 0 100%;
-        -ms-flex: 1 0 100%;
-            flex: 1 0 100%;
-  }
-
-  /* Hot deals */
-
-  .hot-deals-top-locations {
-    display: block;
-    text-align: center;
-  }
-
-  .carousel-right-arrow {
-    right: 15px;
-  }
-
-  .carousel-left-arrow {
-    left: 15px;
-  }
-
-  /* Reviews */
-
-  .customer-ratings {
-    text-align: center;
-  }
-
-  .customer-ratings .rent-brand-wrap,
-  .reviews-heading {
-    float: none;
-  }
-
-  .reviews-heading {
-    font-size: 2.5rem;
-    padding: 0 31px;
-    margin-top: 10px;
-  }
-
-  .reviews .brand-rating {
-    margin-top: 18px;
-  }
-
-  .rating-criteria {
-    margin: 18px 10px 0;
-  }
-
-  .customer-reviews {
-    margin: 10px 10px 0;
-  }
-
-  .review-item {
-    margin: 0 0 3px;
-  }
-
-  /* Other Cities */
-
-  .other-cities {
-    padding: 26px 0 20px;
-  }
-
-  .other-links-list {
-    height: 400px;
-    border: none;
-  }
-
-  .other-links-item {
-    width: 100%;
-    text-align: center;
-  }
-
-  .other-links-item:nth-child(5n+5) {
-    border-bottom: 1px solid #ddd;
-  }
-
-  .other-cities .all-cities-wrap {
-    text-align: center;
-  }
-
-  /* Partners */
-
-  .partner-info .rating-score {
-    margin: 8px 0 15px;
-  }
-
-  /* Quick about */
-
-  .why-us {
-    text-align: center;
-  }
-
-  .quick-about {
-    padding: 25px 0 36px;
-  }
-
-  .quick-about-heading {
-    font-size: 2.2rem;
-    line-height: 1.1;
-  }
-
-  .lower {
-    margin: 0;
-    padding: 0;
-  }
-
-  /* Mobile Apps */
-
-  .app-vendors {
-    margin: 31px 0;
-    text-align: center;
-  }
-
-  .mobile-apps-heading {
-    font-size: 3.3rem;
-  }
-
-  .mobile-apps-ad {
-    margin: 20px 12px 4px;
-  }
-
-  .vendors-wrap {
-    display: block;
-    text-align: center;
-  }
-
-  .vendor {
-    margin-bottom: 25px;
-  }
-
-  .vendor-rating {
-    width: 40%;
-  }
-
-  /* Pre Footer */
-
-  .news-source {
-    margin: 22px 20px;
-  }
-
-  .news-source-auto {
-    width: 96px;
-  }
-
-  .news-source-crn {
-    width: 160px;
-  }
-
-  /* Footer */
-
-  .footer-main {
-    padding: 0 0 19px;
-  }
-
-  .footer-categories {
-    padding: 0;
-  }
-
-  .footer-newsletter {
-    padding: 18px 20px 22px;
-  }
-
-  .footer-form-btn,
-  .footer-form-email {
-    width: 100%;
-  }
-
-  .footer-form-email {
-    margin: 11px 12px 9px 0;
-  }
-
-  .footer-social,
-  .get-app-small {
-    -webkit-flex-basis: 100%;
-        -ms-flex-preferred-size: 100%;
-            flex-basis: 100%;
-    text-align: center;
-  }
-
-  .footer-form {
-    -webkit-box-ordinal-group: 2;
-    -webkit-order: 1;
-        -ms-flex-order: 1;
-            order: 1;
-  }
-
-  .footer-select {
-    -webkit-box-ordinal-group: 3;
-    -webkit-order: 2;
-        -ms-flex-order: 2;
-            order: 2;
-  }
-
-  .footer-social {
-    -webkit-box-ordinal-group: 4;
-    -webkit-order: 3;
-        -ms-flex-order: 3;
-            order: 3;
-  }
-
-  .get-app-small {
-    -webkit-box-ordinal-group: 5;
-    -webkit-order: 4;
-        -ms-flex-order: 4;
-            order: 4;
-  }
-
-  .footer-select {
-    display: block;
-  }
-
-  .footer-menu {
-    width: 90%;
-    margin: 0 auto;
-    display: block;
-    padding: 7px;
-    font-size: 1.3rem;
-  }
-
-  .footer-menu option,
-  .footer-menu optgroup {
-    font-size: 1.4rem;
-  }
-
-  /* Sub Footer */
-
-  .legal {
-    padding: 6px 20px;
-  }
-
-  .legal-text {
-    font-size: 1.1rem;
-  }
-
-  .footer .security-logo {
-    margin-right: 18px;
-  }
-
 }
