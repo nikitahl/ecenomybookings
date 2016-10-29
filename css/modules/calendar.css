@@ -1,13 +1,7 @@
 /* Calendar */
 
 .dropdown-calendar-wrap {
-  display: block; /* uncomment in browser to display */
-}
-
-.dropdown-calendar-wrap::before {
-  left: 635px;
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
+  display: block;
 }
 
 .dropdown-calendar {
@@ -16,20 +10,47 @@
   left: 0;
   padding: 2px;
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.dropdown-calendar::before {
+.date-start::before,
+.date-start::after,
+.date-end::before,
+.date-end::after {
   content: '';
   position: absolute;
-  top: -3px;
-  left: 635px;
   margin-left: -4px;
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
+}
+
+.date-start::before {
+  top: -3px;
+  left: 635px;
+  z-index: 1;
   border-bottom: 6px solid #eee;
+}
+
+.date-start::after {
+  bottom: 100%;
+  left: 635px;
+  width: 0;
+  border-bottom: 6px solid #fff;
+}
+
+.date-end::before {
+  top: -3px;
+  left: 705px;
+  z-index: 1;
+  border-bottom: 6px solid #eee;
+}
+
+.date-end::after {
+  bottom: 100%;
+  left: 705px;
+  width: 0;
+  border-bottom: 6px solid #fff;
 }
 
 .prev-month,
@@ -65,7 +86,6 @@
 .calendar-wrap {
   color: #000;
   -webkit-box-flex: 1;
-  -webkit-flex: 1 0 0%;
       -ms-flex: 1 0 0%;
           flex: 1 0 0%;
 }
@@ -106,7 +126,7 @@
 }
 
 .past-day {
-  color: #777;
+  color: #999;
 }
 
 .selected-day {
@@ -156,7 +176,188 @@
   background-color: #eee;
   color: #000;
   display: -webkit-box;
-  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  text-align: center;
+}
+/* Calendar */
+
+.dropdown-calendar-wrap {
+  display: block;
+}
+
+.dropdown-calendar {
+  width: 100%;
+  z-index: 5;
+  left: 0;
+  padding: 2px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.date-start::before,
+.date-start::after,
+.date-end::before,
+.date-end::after {
+  content: '';
+  position: absolute;
+  margin-left: -4px;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+}
+
+.date-start::before {
+  top: -3px;
+  left: 635px;
+  z-index: 1;
+  border-bottom: 6px solid #eee;
+}
+
+.date-start::after {
+  bottom: 100%;
+  left: 635px;
+  width: 0;
+  border-bottom: 6px solid #fff;
+}
+
+.date-end::before {
+  top: -3px;
+  left: 705px;
+  z-index: 1;
+  border-bottom: 6px solid #eee;
+}
+
+.date-end::after {
+  bottom: 100%;
+  left: 705px;
+  width: 0;
+  border-bottom: 6px solid #fff;
+}
+
+.prev-month,
+.next-month {
+  position:absolute;
+  display: inline-block;
+  color: #848484;
+  font: normal normal normal 3rem/1 FontAwesome;
+  cursor: pointer;
+}
+
+.prev-month:hover,
+.next-month:hover {
+  color: #000;
+}
+
+.prev-month {
+  left: 8px;
+}
+
+.prev-month::before {
+  content: "\f104";
+}
+
+.next-month {
+  right: 8px;
+}
+
+.next-month::before {
+  content: "\f105";
+}
+
+.calendar-wrap {
+  color: #000;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 0%;
+          flex: 1 0 0%;
+}
+
+.calendar-month-name {
+  background-color: #eee;
+  text-align: center;
+  line-height: 2.5;
+}
+
+.calendar {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.calendar-month {
+  border-left: 1px solid #eee;
+  padding: 0 5px;
+}
+
+.calendar-month-noborder {
+  border: none;
+}
+
+.calendar-header {
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.calendar-body tr {
+  border-bottom: 1px solid #fff;
+}
+
+.calendar-body td {
+  padding: 1px 0;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.past-day {
+  color: #999;
+}
+
+.selected-day {
+  background-color: #add8e6;
+  cursor: pointer;
+}
+
+.start-day,
+.end-day {
+  background-color: #008aff;
+  position: relative;
+  color: #fff;
+  cursor: pointer;
+}
+
+.start-day::after {
+  content: '';
+	position: absolute;
+	top: 0;
+	left: 100%;
+	width: 0;
+	height: 0;
+	border-top: 16px solid transparent;
+	border-left: 7px solid #008aff;
+	border-bottom: 16px solid transparent;
+	z-index: 2;
+}
+
+.end-day::before {
+  content: "";
+  position: absolute;
+  left: 0;
+	top: 0;
+  width: 0;
+  height: 0;
+  border-bottom: 16px solid transparent;
+  border-left: 7px solid #add8e6;
+  border-top: 16px solid transparent;
+}
+
+.month-day:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.calendar-months {
+  background-color: #eee;
+  color: #000;
+  display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   text-align: center;
