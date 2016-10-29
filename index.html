@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="author" content="https://github.com/nikitahl">
     <meta name="description" content="EconomyBookings a.k.a. Brand City | PSD to HTML project for webskola.lv">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Economy Bookings | PSD to HTML project for webskola</title>
     <link rel="icon" href="img/favicon2.png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -255,31 +255,54 @@
           <div class="row">
             <div class="col-1">
               <div class="header-searchform-wrap">
-                <form class="header-searchform">
+                <form class="header-searchform" id="datepicker">
                   <div class="rent-brand-wrap">
                     <div class="rent-brand">
-                      <img class="avis-logo" src="img/avis-logo.png" alt="Avis Logo" title="Avis Logo">
+                      <img
+                        class="avis-logo"
+                        src="img/avis-logo.png"
+                        alt="Avis Logo"
+                        title="Avis Logo"
+                      >
                     </div><!-- .rent-brand -->
                   </div><!-- .rent-brand-wrap -->
                   <div class="header-searchform-input js-search-wrap">
-                    <input class="location-input js-search-input" type="text" placeholder="City, Location, Airport Code">
+                    <input
+                      class="location-input js-search-input"
+                      type="text"
+                      placeholder="City, Location, Airport Code"
+                    >
                   </div>
                   <div class="start-date-wrap">
-                    <button class="start-date-btn js-date-btn" type="button" data-trip-date="start-date">
+                    <button
+                      class="start-date-btn js-date-btn"
+                      type="button"
+                      data-trip-date="start"
+                    >
                       From
                       <!-- <span class="date-small">Dec 29</span>
                       <span class="date-large">December 29</span> -->
                     </button>
                   </div>
                   <div class="end-date-wrap">
-                    <button class="end-date-btn js-date-btn" type="button" data-trip-date="end-date">
+                    <button
+                      class="end-date-btn js-date-btn"
+                      type="button"
+                      data-trip-date="end"
+                    >
                       To
                       <!-- <span class="date-small">Jan 11</span>
                       <span class="date-large">January 11</span> -->
                     </button>
                   </div>
                   <div class="show-prices-wrap">
-                    <button class="show-prices-btn" type="button" name="button">Show Prices</button>
+                    <button
+                      class="show-prices-btn"
+                      type="button"
+                      name="button"
+                    >
+                    Show Prices
+                    </button>
                   </div>
 
                   <div class="dropdown-content dropdown-locations-wrap">
@@ -1271,10 +1294,8 @@
     <script src="js/carousel.js"></script>
     <script src="js/validation.js"></script>
     <script src="js/autocomplete.js"></script>
-
     <script src="js/calendar.js"></script>
     <script src="js/datepicker.js"></script>
-
     <script src="js/debug.js"></script>
 
   </body>
