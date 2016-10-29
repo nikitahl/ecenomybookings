@@ -22,6 +22,10 @@ Functionality - jQuery and JavaScript.
 
 * Autocomplete
 
+* Calendar
+
+* Datepicker
+
 
 Preview:
 http://nikitahl.github.io/economybookings/
