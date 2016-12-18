@@ -63,6 +63,9 @@ var Datepicker = function() {
   };
 };
 
+/**
+*	 Create datepicker wrapper with elements, attach to DOM
+*/
 Datepicker.prototype.createDatepickerBase = function() {
   var datepickerWrapper = document.createElement("div");
   datepickerWrapper.classList.add("dropdown-calendar-wrap", "dropdown-content", "is-hidden");
@@ -72,17 +75,12 @@ Datepicker.prototype.createDatepickerBase = function() {
   this.element.headerSearchForm.appendChild(datepickerWrapper);
 }
 
-
 /**
-*	 Renew datepicker accordingly depending on navigation click
+*	 Display datepicker Previous button depending on visible month
 *  @param string
 *  @param string
 */
-Datepicker.prototype.renewDatepicker = function(month, year) {
-  console.log(this.state.rentState);
-  while (this.element.calendarContainer.firstChild) {
-    this.element.calendarContainer.removeChild(this.element.calendarContainer.firstChild);
-  }
+Datepicker.prototype.togglePrevButton = function(month, year) {
   if (this.state.isPrevButtonActive && month === this.initialDate.month && year === this.initialDate.year) {
     this.element.datepickerPrev.classList.add("is-hidden");
     this.state.isPrevButtonActive = false;
@@ -90,29 +88,44 @@ Datepicker.prototype.renewDatepicker = function(month, year) {
     this.element.datepickerPrev.classList.remove("is-hidden");
     this.state.isPrevButtonActive = true;
   }
-  // this.calendar.renderCalendar(this.state.rentDates[this.state.rentState]);
+}
+
+/**
+*	 Renew datepicker accordingly depending on navigation click
+*  @param string
+*  @param string
+*/
+Datepicker.prototype.renewDatepicker = function(month, year) {
+  // clear HTML
+  while (this.element.calendarContainer.firstChild) {
+    this.element.calendarContainer.removeChild(this.element.calendarContainer.firstChild);
+  }
+  this.togglePrevButton(month, year);
+  this.calendar.renderCalendar(this.state.rentDates[this.state.rentState]);
 }
 
 /**
 *	 Handle click event on datepicker navigation
 */
 Datepicker.prototype.handleDatepickerNav = function(e) {
+  console.log('handleDatepickerNav', this.state.rentDates[this.state.rentState]);
+  var rentDate = this.state.rentDates[this.state.rentState];
   if (e.target.dataset.navDir === "next") {
-    if (this.state.initialMonth < 11) {
-      this.state.initialMonth++;
+    if (rentDate.month < 11) {
+      rentDate.month++;
     } else {
-      this.state.initialMonth = 0;
-      this.state.initialYear++;
+      rentDate.month = 0;
+      rentDate.year++;
     }
   } else if (e.target.dataset.navDir === "prev") {
-    if (this.state.initialMonth > 0) {
-      this.state.initialMonth--;
+    if (rentDate.month > 0) {
+      rentDate.month--;
     } else {
-      this.state.initialMonth = 11;
-      this.state.initialYear--;
+      rentDate.month = 11;
+      rentDate.year--;
     }
   }
-  this.renewDatepicker(this.state.initialMonth, this.state.initialYear);
+  this.renewDatepicker(rentDate.month, rentDate.year);
 }
 
 /**
@@ -212,7 +225,7 @@ Datepicker.prototype.handleDatepicker = function(toShow, toHide) {
 * @param object
 */
 Datepicker.prototype.setRentDate = function(data) {
-  console.log(data);
+  // console.log(data);
   this.element.rentBtn[data.trip].textContent = data.placeholder;
   // if (year) {
   //   this.state.rentDates[date].year = year;
