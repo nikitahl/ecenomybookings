@@ -81,34 +81,31 @@ Datepicker.prototype.createDatepickerBase = function() {
 *  @param string
 */
 Datepicker.prototype.togglePrevButton = function(month, year) {
-  if (this.state.isPrevButtonActive && month === this.initialDate.month && year === this.initialDate.year) {
+  if (month === this.initialDate.month && year === this.initialDate.year) {
     this.element.datepickerPrev.classList.add("is-hidden");
-    this.state.isPrevButtonActive = false;
   } else {
     this.element.datepickerPrev.classList.remove("is-hidden");
-    this.state.isPrevButtonActive = true;
   }
 }
 
 /**
-*	 Renew datepicker accordingly depending on navigation click
-*  @param string
-*  @param string
+*	 Renew datepicker
 */
-Datepicker.prototype.renewDatepicker = function(month, year) {
+Datepicker.prototype.renewDatepicker = function() {
   // clear HTML
   while (this.element.calendarContainer.firstChild) {
     this.element.calendarContainer.removeChild(this.element.calendarContainer.firstChild);
   }
-  this.togglePrevButton(month, year);
-  this.calendar.renderCalendar(this.state.rentDates[this.state.rentState]);
+  var rentDate = this.state.rentDates[this.state.rentState];
+  this.togglePrevButton(rentDate.month, rentDate.year);
+  this.calendar.renderCalendar(rentDate);
 }
 
 /**
 *	 Handle click event on datepicker navigation
+*  @param event
 */
 Datepicker.prototype.handleDatepickerNav = function(e) {
-  console.log('handleDatepickerNav', this.state.rentDates[this.state.rentState]);
   var rentDate = this.state.rentDates[this.state.rentState];
   if (e.target.dataset.navDir === "next") {
     if (rentDate.month < 11) {
@@ -125,7 +122,7 @@ Datepicker.prototype.handleDatepickerNav = function(e) {
       rentDate.year--;
     }
   }
-  this.renewDatepicker(rentDate.month, rentDate.year);
+  this.renewDatepicker();
 }
 
 /**
@@ -155,7 +152,6 @@ Datepicker.prototype.createDatepickerEvents = function() {
       if (navBtns[i].dataset.navDir === "prev") {
         this.element.datepickerPrev = navBtns[i];
         this.element.datepickerPrev.classList.add("is-hidden");
-        this.state.isPrevButtonActive = false;
       } else {
         this.element.datepickerNext = navBtns[i];
       }
@@ -165,7 +161,7 @@ Datepicker.prototype.createDatepickerEvents = function() {
 }
 
 /**
-*	 Call methods to construct datepicker
+*	 Call methods to construct datepicker, assign proper events
 */
 Datepicker.prototype.constructDatepicker = function(toShow) {
   this.createDatepickerBase();
@@ -210,14 +206,15 @@ Datepicker.prototype.handleDatepicker = function(toShow, toHide) {
     this.constructDatepicker(toShow);
     this.state.isDatepickerInit = true;
   }
-  if (!this.state.isDatepickerActive) {
+  if (!this.state.isDatepickerActive || this.state.rentState !== toShow) {
+    console.log("this.state.isDatepickerActive", this.state.isDatepickerActive);
     this.element.datepicker.classList.remove("is-hidden");
     document.body.addEventListener("click", datepicker.hideDatepicker);
     this.state.isDatepickerActive = true;
+    this.state.rentState = toShow;
+    this.indicateDate(toShow, toHide);
+    this.renewDatepicker();
   }
-  // TODO remove this.state.rentState if unused
-  this.state.rentState = toShow;
-  this.indicateDate(toShow, toHide);
 }
 
 /**
@@ -238,12 +235,10 @@ Datepicker.prototype.setRentDate = function(data) {
   // }
 }
 
-
 /**
-* Creates objects for rent dates in state,
-* calls setRentDate method for both states
+* Creates objects with initial dates for rent dates in state
 */
-Datepicker.prototype.setInitialRentDates = function() {
+Datepicker.prototype.setInitialRentState = function() {
   this.state.rentDates.start = new RentData({
     day: this.initialDate.day,
     month: this.initialDate.month,
@@ -253,6 +248,7 @@ Datepicker.prototype.setInitialRentDates = function() {
 
   var endState = {};
   endState.day = this.initialDate.day;
+  endState.dayStart = this.initialDate.day;
   endState.month = this.initialDate.month;
   endState.year = this.initialDate.year;
   endState.trip = "end";
@@ -274,6 +270,13 @@ Datepicker.prototype.setInitialRentDates = function() {
   }
 
   this.state.rentDates.end = new RentData(endState);
+}
+
+/**
+* Calls setInitialRentState and setRentDate method for both states
+*/
+Datepicker.prototype.setInitialRentDates = function() {
+  this.setInitialRentState();
   this.setRentDate(this.state.rentDates.start);
   this.setRentDate(this.state.rentDates.end);
 }
