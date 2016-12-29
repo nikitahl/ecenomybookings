@@ -44,11 +44,13 @@ CalendarConstructor.prototype.createNewElement = function(element, className) {
 *	@return String name of the month
 */
 CalendarConstructor.prototype.getMonthName = function(monthNumber) {
-	for (var i = 0; i < this.monthNames.length; i++) {
-		if ( i === monthNumber ) {
-			return this.monthNames[i];
+	var monthName;
+	this.monthNames.forEach(function(name, i) {
+		if (i === monthNumber) {
+			monthName = name;
 		}
-	}
+	});
+	return monthName;
 }
 
 /**
@@ -59,7 +61,7 @@ CalendarConstructor.prototype.getMonthName = function(monthNumber) {
 CalendarConstructor.prototype.createMonthNameWrap = function(monthData) {
 	var div = this.createNewElement("div", "calendar-month-name");
 	var span = this.createNewElement("span", "month-name");
-	span.innerHTML = "<b>" + this.getMonthName(monthData.month) + "</b> " + monthData.year;
+	span.innerHTML = "<b>" + this.getMonthName(monthData.monthToRender) + "</b> " + monthData.yearToRender;
 	div.appendChild(span);
 	return div;
 }
@@ -71,52 +73,145 @@ CalendarConstructor.prototype.createMonthNameWrap = function(monthData) {
 CalendarConstructor.prototype.createMonthTableHead = function() {
 	var thead = this.createNewElement("thead", "calendar-header");
 	var tr = this.createNewElement("tr", "calendar-row");
-	for	( var i = 0; i < this.daysShort.length; i++ ) {
-		tr.innerHTML += "<th>" + this.daysShort[i] + "</th>";
-	}
+	this.daysShort.forEach(function(day) {
+		tr.innerHTML += "<th>" + day + "</th>";
+	});
 	thead.appendChild(tr);
 	return thead;
 }
 
 /**
-*	Distribute month days to the according table cells
+*	Store and parse month data
+* @param month number, year number
+*	@return monthData object
+*/
+CalendarConstructor.prototype.getMonthDays = function(month, year) {
+	var monthDays = {
+		// Number of days in current month
+		monthDaysCount: function() {
+			return new Date(year, month + 1, 0).getDate();
+  	},
+		// Get week day for every day in the month 0 to 6.
+		weekDay: function(d) {
+			var dayNum = new Date(year, month, d);
+			return dayNum.getDay();
+		}
+	};
+	return monthDays;
+};
+
+/**
+*	Distribute month days to the according table cells if start date is selected
 * @param monthData object
 *	@return HTML
 */
-CalendarConstructor.prototype.distributeDays = function(data, tbody) {
-	var monthData = data;
-	var day = 1;
-	var dayCount = monthData.monthDaysCount();
+CalendarConstructor.prototype.distributeStartDays = function(data, tbody) {
+	var monthDays = this.getMonthDays(data.monthToRender, data.yearToRender),
+			day = 1;
+	var dayCount = monthDays.monthDaysCount();
 	while ( day < dayCount ) {
 		var weekRow = document.createElement("tr");
-		for (var i = 0; i < 7; i++) {
-			if (monthData.weekDay(day) === i) {
-        // var dayData = monthData;
-        // dayData.day = day;
-        // var obj = JSON.stringify(dayData);
-				// TODO use stringified object above
-				var obj = "data";
-        if ( monthData.month === this.date.getMonth() ) {
-					// console.log(monthData);
-          if ( day < this.currentDay ) {
-            weekRow.innerHTML += "<td class='past-day'>" + day + "</td>";
-          } else if ( day === monthData.day ) {
-						weekRow.innerHTML += "<td class='" + monthData.trip + "-day'>" + day + "</td>";
-						// this.monthData.el = document.querySelector("." + monthData.trip + "-day");
+		for ( var i = 0; i < 7; i++ ) {
+			if ( monthDays.weekDay(day) === i ) {
+				var dayObj = {};
+				dayObj.day = day;
+				dayObj.month = data.monthToRender;
+				dayObj.year = data.yearToRender;
+				var dayData = JSON.stringify(dayObj);
+				if ( data.monthToRender === this.currentMonth) {
+					// distribute days for current month
+					if ( day < this.currentDay ) {
+						weekRow.innerHTML += "<td class='past-day'>" + day + "</td>";
 					} else {
-						var dayClass = "month-day";
-						if (monthData.trip === "end") {
-							dayClass += " selected-day"
+						if (day === data.startDay) {
+							weekRow.innerHTML += "<td class='start-day' data-day='" + dayData + "'>" + day + "</td>";
+						} else {
+							weekRow.innerHTML += "<td class='month-day' data-day='" + dayData + "'>" + day + "</td>";
 						}
-            weekRow.innerHTML += "<td class='" + dayClass + "' data-day='" + obj + "'>" + day + "</td>";
-          }
-        } else {
-          weekRow.innerHTML += "<td class='month-day' data-day='" + obj + "'>" + day + "</td>";
-        }
+					}
+				} else {
+					// distribute days for next months
+					if (day === data.startDay && data.monthToRender === data.startMonth) {
+						weekRow.innerHTML += "<td class='start-day' data-day='" + dayData + "'>" + day + "</td>";
+					} else {
+						weekRow.innerHTML += "<td class='month-day' data-day='" + dayData + "'>" + day + "</td>";
+					}
+				}
+				// increment day counter
 				day++;
 			} else {
 				weekRow.innerHTML += "<td></td>";
 			}
+
+			if ( day > dayCount ) {
+				break;
+			}
+		}
+		tbody.appendChild(weekRow);
+	}
+}
+
+/**
+*	Distribute month days to the according table cells if end date is selected
+* @param monthData object
+*	@return HTML
+*/
+CalendarConstructor.prototype.distributeEndDays = function(data, tbody) {
+	var monthDays = this.getMonthDays(data.monthToRender, data.yearToRender),
+			day = 1;
+	var dayCount = monthDays.monthDaysCount();
+	while ( day < dayCount ) {
+		var weekRow = document.createElement("tr");
+		for ( var i = 0; i < 7; i++ ) {
+			if ( monthDays.weekDay(day) === i ) {
+				var dayObj = {};
+				dayObj.day = day;
+				dayObj.month = data.monthToRender;
+				dayObj.year = data.yearToRender;
+				var dayData = JSON.stringify(dayObj);
+				if ( data.monthToRender === this.currentMonth) {
+					// distribute days for current month
+					if ( day < data.startDay ) {
+						weekRow.innerHTML += "<td class='past-day'>" + day + "</td>";
+					} else {
+						if (day === data.startDay && data.monthToRender === data.startMonth) {
+							weekRow.innerHTML += "<td class='start-day' data-day='" + dayData + "'>" + day + "</td>";
+						} else if (
+							day > data.startDay && data.monthToRender === data.startMonth ||
+							day < data.endDay && data.monthToRender === data.endMonth ||
+							data.monthToRender > data.startMonth && data.yearToRender === data.startYear && data.monthToRender < data.endMonth && data.yearToRender === data.endYear ||
+							data.monthToRender < data.startMonth && data.yearToRender < data.startYear && data.monthToRender < data.endMonth && data.yearToRender === data.endYear
+							) {
+							weekRow.innerHTML += "<td class='selected-day' data-day='" + dayData + "'>" + day + "</td>";
+						} else if (day === data.endDay && data.monthToRender === data.endMonth) {
+							weekRow.innerHTML += "<td class='end-day' data-day='" + dayData + "'>" + day + "</td>";
+						} else {
+							weekRow.innerHTML += "<td class='month-day' data-day='" + dayData + "'>" + day + "</td>";
+						}
+					}
+				} else {
+					// distribute days for next months
+					if (day === data.startDay && data.monthToRender === data.startMonth) {
+						weekRow.innerHTML += "<td class='start-day' data-day='" + dayData + "'>" + day + "</td>";
+					} else if (
+						day > data.startDay && data.monthToRender === data.startMonth ||
+						day < data.endDay && data.monthToRender === data.endMonth ||
+						data.monthToRender > data.startMonth && data.yearToRender === data.startYear && data.monthToRender < data.endMonth && data.yearToRender === data.endYear ||
+						data.monthToRender < data.startMonth && data.yearToRender < data.startYear && data.monthToRender < data.endMonth && data.yearToRender === data.endYear
+					) {
+						weekRow.innerHTML += "<td class='selected-day' data-day='" + dayData + "'>" + day + "</td>";
+					} else if (day === data.endDay && data.monthToRender === data.endMonth) {
+						weekRow.innerHTML += "<td class='end-day' data-day='" + dayData + "'>" + day + "</td>";
+					} else {
+						weekRow.innerHTML += "<td class='month-day' data-day='" + dayData + "'>" + day + "</td>";
+					}
+				}
+				// increment day counter
+				day++;
+			} else {
+				weekRow.innerHTML += "<td></td>";
+			}
+
 			if ( day > dayCount ) {
 				break;
 			}
@@ -132,7 +227,11 @@ CalendarConstructor.prototype.distributeDays = function(data, tbody) {
 */
 CalendarConstructor.prototype.createMonthTableBody = function(monthData) {
 	var tbody = this.createNewElement("tbody", "calendar-body");
-	this.distributeDays(monthData, tbody);
+	if ( monthData.selected === "start" ) {
+		this.distributeStartDays(monthData, tbody);
+	} else {
+		this.distributeEndDays(monthData, tbody);
+	}
 	return tbody;
 }
 
@@ -151,66 +250,57 @@ CalendarConstructor.prototype.createMonthTableWrap = function(monthData) {
 }
 
 /**
+*	Update monthData object by incrementing month and year accordingly
+* @param Object with month data
+*	@return monthData Updated monthData object
+*/
+CalendarConstructor.prototype.updateMonthData = function(monthData, month, year) {
+	if ( monthData.renderIteration ) {
+		console.log('iteration > 0');
+		if (monthData.monthToRender < 11) {
+			monthData.monthToRender = ++monthData.monthToRender;
+		} else {
+			monthData.monthToRender = 0;
+			monthData.yearToRender = ++year;
+		}
+	} else {
+		console.log('iteration < 0');
+		monthData.monthToRender = month;
+		monthData.yearToRender = year;
+	}
+	return monthData;
+}
+
+/**
 *	Create wrapper element for calendar month
-* @param monthData object
+* @param data object
 *	@return HTML element
 */
-CalendarConstructor.prototype.createMonthWrapper = function(monthData) {
+CalendarConstructor.prototype.createMonthWrapper = function(data) {
 	var div = this.createNewElement("div", "calendar-wrap");
+	var monthData;
+	// if ( data.hasOwnProperty("monthToRender") && data.monthToRender !== null ) {
+	// 	console.log('hasOwnProperty("monthToRender")');
+	// 	monthData = this.updateMonthData(data, data.monthToRender, data.yearToRender);
+	// } else
+	if ( data.selected === "start" ) {
+		monthData = this.updateMonthData(data, data.startMonth, data.startYear);
+	} else {
+		monthData = this.updateMonthData(data, data.endMonth, data.endYear);
+	}
 	div.appendChild(this.createMonthNameWrap(monthData));
 	div.appendChild(this.createMonthTableWrap(monthData));
 	return div;
 }
 
 /**
-*	Update monthData object by incrementing month and year accordingly
-* @param monthData, counter Object with month data, loop counter
-*	@return monthData Updated monthData object
-*/
-CalendarConstructor.prototype.updateMonthData = function(monthData, counter) {
-	if (counter !== 0) {
-		if (monthData.month < 11) {
-			monthData.month++
-		} else {
-			monthData.month = 0;
-			monthData.year++;
-		}
-	}
-	return monthData;
-}
-
-/**
-*	Store and parse month data
-* @param data object from datepicker
-*	@return monthData object
-*/
-CalendarConstructor.prototype.getMonthData = function(data) {
-	var monthData = {
-		// Number of days in current month
-		monthDaysCount: function() {
-			var _this = this;
-			var daysCount = new Date(_this.year, _this.month + 1, 0).getDate();
-			return daysCount;
-  	},
-		// Get week day for every day in the month 0 to 6.
-		weekDay: function(d) {
-			var _this = this;
-			var dayNum = new Date(_this.year, _this.month, d);
-			return dayNum.getDay();
-		}
-	};
-	var newMonthData = Object.assign(monthData, data);
-	return newMonthData;
-};
-
-/**
 *	Render HTML for calendar to page
+* @param object
 */
 CalendarConstructor.prototype.renderCalendar = function(data) {
-	this.monthData = this.getMonthData(data);
-	var calendarContainer = document.getElementById(this.monthData.id);
-	for(var i = 0; i < this.monthData.count; i++) {
-		var updatedData = this.updateMonthData(this.monthData, i);
-		calendarContainer.appendChild(this.createMonthWrapper(updatedData));
+	var calendarContainer = document.getElementById(data.id);
+	for(var i = 0; i < data.count; i++) {
+		data.renderIteration = i;
+		calendarContainer.appendChild(this.createMonthWrapper(data));
 	}
 }
