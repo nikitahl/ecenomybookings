@@ -11,23 +11,35 @@ this.Element && function(ElementPrototype) {
 }(Element.prototype);
 
 /**
-*   Rent Data constructor
+*   Rent Data constructor, holds information about rent dates
 *   @param object
 */
 var RentData = function(data) {
-  this.locale = "en-us",
-  this.day = data.day,
-  this.month = data.month,
-  this.year = data.year,
-  this.el = null,
-  this.id = "calendar",
   this.count = 3,
-  this.trip = data.trip,
-  this.date = function() {
+  this.id = "calendar",
+  this.locale = "en-us",
+  this.selected = data.selected,
+  this.startDay = data.startDay,
+  this.startMonth = data.startMonth,
+  this.startYear = data.startYear,
+  this.startElement = null,
+  this.startDate = function() {
     var _this = this;
-    return new Date(_this.year, _this.month, _this.day);
+    return new Date(_this.startYear, _this.startMonth, _this.startDay);
   },
-  this.placeholder = this.date().toLocaleString(this.locale, {
+  this.startPlaceholder = this.startDate().toLocaleString(this.locale, {
+    month: "short",
+    day: "numeric"
+  }),
+  this.endDay = data.endDay,
+  this.endMonth = data.endMonth,
+  this.endYear = data.endYear,
+  this.endElement = null,
+  this.endDate = function() {
+    var _this = this;
+    return new Date(_this.endYear, _this.endMonth, _this.endDay);
+  },
+  this.endPlaceholder = this.endDate().toLocaleString(this.locale, {
     month: "short",
     day: "numeric"
   })
@@ -48,57 +60,87 @@ var Datepicker = function() {
       day: "numeric"
     })
   };
-  this.element = {
+  this.elements = {
     documentBody: document.querySelector("body"),
     headerSearchForm: document.querySelector("#datepicker"),
     nav: document.querySelectorAll(".js-date-btn")
   };
   this.state = {
-    initialMonth: this.initialDate.month,
-    initialYear: this.initialDate.year,
     isDatepickerActive: false,
     isDatepickerInit: false,
-    rentState: null,
     rentDates: {}
   };
 };
 
 /**
-*	 Create datepicker wrapper with elements, attach to DOM
-*/
-Datepicker.prototype.createDatepickerBase = function() {
-  var datepickerWrapper = document.createElement("div");
-  datepickerWrapper.classList.add("dropdown-calendar-wrap", "dropdown-content", "is-hidden");
-  datepickerWrapper.innerHTML += "<div class='prev-month js-months-nav' data-nav-dir='prev'></div>";
-  datepickerWrapper.innerHTML += "<div class='next-month js-months-nav' data-nav-dir='next'></div>";
-  datepickerWrapper.innerHTML += "<div class='dropdown-calendar' id='calendar'></div>";
-  this.element.headerSearchForm.appendChild(datepickerWrapper);
-}
-
-/**
 *	 Display datepicker Previous button depending on visible month
-*  @param string
-*  @param string
 */
-Datepicker.prototype.togglePrevButton = function(month, year) {
+Datepicker.prototype.togglePrevButton = function() {
+  var state = this.state.rentDates,
+      month = state.selected === "start" ? state.startMonth : state.endMonth,
+      year = state.selected === "start" ? state.startYear : state.endYear;
   if (month === this.initialDate.month && year === this.initialDate.year) {
-    this.element.datepickerPrev.classList.add("is-hidden");
+    this.elements.navBtn.prev.classList.add("is-hidden");
   } else {
-    this.element.datepickerPrev.classList.remove("is-hidden");
+    this.elements.navBtn.prev.classList.remove("is-hidden");
   }
+  // TODO: logic for back button
+  // if ( state.selected === "start") {
+  //   month = state.startMonth;
+  //   year = state.startYear;
+  //   if (month === this.initialDate.month && year === this.initialDate.year) {
+  //     this.elements.navBtn.prev.classList.add("is-hidden");
+  //   } else {
+  //     this.elements.navBtn.prev.classList.remove("is-hidden");
+  //   }
+  // } else {
+  //   month = state.endMonth;
+  //   year = state.endYear;
+  //   if (month > state.startMonth + 2 && year === state.startYear ||
+  //
+  //     ) {
+  //     this.elements.navBtn.prev.classList.add("is-hidden");
+  //   } else {
+  //     this.elements.navBtn.prev.classList.remove("is-hidden");
+  //   }
+  // }
 }
 
 /**
-*	 Renew datepicker
+*	 Renew datepicker, call render function
 */
 Datepicker.prototype.renewDatepicker = function() {
   // clear HTML
-  while (this.element.calendarContainer.firstChild) {
-    this.element.calendarContainer.removeChild(this.element.calendarContainer.firstChild);
+  while (this.elements.calendarContainer.firstChild) {
+    this.elements.calendarContainer.removeChild(this.elements.calendarContainer.firstChild);
   }
-  var rentDate = this.state.rentDates[this.state.rentState];
-  this.togglePrevButton(rentDate.month, rentDate.year);
-  this.calendar.renderCalendar(rentDate);
+  this.togglePrevButton();
+  this.calendar.renderCalendar(this.state.rentDates);
+}
+
+/**
+*	 Increment or decrement month depending on state
+*  @param number
+*  @param number
+*/
+Datepicker.prototype.calculateMonth = function(button, month, year) {
+  var rentDate = this.state.rentDates;
+  console.log('calculateMonth', button);
+  if (button === "next") {
+    if (month < 11) {
+      rentDate.monthToRender = ++month;
+    } else {
+      rentDate.monthToRender = 0;
+      rentDate.yearToRender = ++year;
+    }
+  } else {
+    if (month > 0) {
+      rentDate.monthToRender = --month;
+    } else {
+      rentDate.monthToRender = 11;
+      rentDate.yearToRender = --year;
+    }
+  }
 }
 
 /**
@@ -106,70 +148,63 @@ Datepicker.prototype.renewDatepicker = function() {
 *  @param event
 */
 Datepicker.prototype.handleDatepickerNav = function(e) {
-  var rentDate = this.state.rentDates[this.state.rentState];
-  if (e.target.dataset.navDir === "next") {
-    if (rentDate.month < 11) {
-      rentDate.month++;
-    } else {
-      rentDate.month = 0;
-      rentDate.year++;
-    }
-  } else if (e.target.dataset.navDir === "prev") {
-    if (rentDate.month > 0) {
-      rentDate.month--;
-    } else {
-      rentDate.month = 11;
-      rentDate.year--;
-    }
+  var rentDate = this.state.rentDates;
+  if (rentDate.selected === "start") {
+    this.calculateMonth(e.target.dataset.navDir, rentDate.startMonth, rentDate.startYear);
+  } else {
+    this.calculateMonth(e.target.dataset.navDir, rentDate.endMonth, rentDate.endYear);
   }
+  console.log('handleDatepickerNav', rentDate);
   this.renewDatepicker();
-}
-
-/**
-*	 Handle click event on calendar day
-*/
-Datepicker.prototype.selectDate = function(e) {
-  console.log(e.target);
-  var selected,
-      monthName,
-      rentState = datepicker.state.rentState;
-  if (e.target.classList.contains("month-day")) {
-    selected = JSON.parse(e.target.dataset.day);
-    monthName = datepicker.calendar.monthNames[selected.month].slice(0, 3) + selected.day;
-  }
-  // datepicker.setRentDate(rentState, monthName, selected.day, selected.month, selected.year, e.target);
-  // console.log(datepicker.state.rentDates[rentState]);
 }
 
 /**
 *	 Add events to datepicker elements
 */
 Datepicker.prototype.createDatepickerEvents = function() {
-  var navBtns = this.element.calendarNavButton;
-  for (var i in navBtns) {
-    if (navBtns.hasOwnProperty(i)) {
-      navBtns[i].addEventListener("click", this.handleDatepickerNav.bind(this));
-      if (navBtns[i].dataset.navDir === "prev") {
-        this.element.datepickerPrev = navBtns[i];
-        this.element.datepickerPrev.classList.add("is-hidden");
-      } else {
-        this.element.datepickerNext = navBtns[i];
-      }
+  var navBtn = Array.prototype.slice.call(this.elements.calendarNavButton);
+  this.elements.navBtn = {};
+  navBtn.forEach(function(button) {
+    this.elements.navBtn[button.dataset.navDir] = button;
+    button.addEventListener("click", this.handleDatepickerNav.bind(this));
+    if (button.dataset.navDir === "prev") {
+      this.elements.navBtn[button.dataset.navDir].classList.add("is-hidden");
     }
-  }
-  this.element.calendarContainer.addEventListener("click", this.selectDate);
+  }, this);
+  this.elements.calendarContainer.addEventListener("click", this.selectDate);
 }
 
 /**
-*	 Call methods to construct datepicker, assign proper events
+*	Create datepicker wrapper with elements, attach to DOM, assign proper events
 */
-Datepicker.prototype.constructDatepicker = function(toShow) {
-  this.createDatepickerBase();
-  this.calendar.renderCalendar(this.state.rentDates[toShow]);
-  this.element.datepicker = document.querySelector(".dropdown-calendar-wrap");
-  this.element.calendarNavButton = document.querySelectorAll(".js-months-nav");
-  this.element.calendarContainer = document.querySelector(".dropdown-calendar");
+Datepicker.prototype.constructDatepickerBase = function() {
+  var datepickerWrapper = document.createElement("div");
+  datepickerWrapper.classList.add("dropdown-calendar-wrap", "dropdown-content", "is-hidden");
+  datepickerWrapper.innerHTML += "<div class='prev-month js-months-nav' data-nav-dir='prev'></div>";
+  datepickerWrapper.innerHTML += "<div class='next-month js-months-nav' data-nav-dir='next'></div>";
+  datepickerWrapper.innerHTML += "<div class='dropdown-calendar' id='calendar'></div>";
+  this.elements.headerSearchForm.appendChild(datepickerWrapper);
+  this.elements.datepicker = document.querySelector(".dropdown-calendar-wrap");
+  this.elements.calendarNavButton = document.querySelectorAll(".js-months-nav");
+  this.elements.calendarContainer = document.querySelector(".dropdown-calendar");
   this.createDatepickerEvents();
+}
+
+/**
+*	 Handle click event on calendar day
+*/
+Datepicker.prototype.selectDate = function(e) {
+  // console.log(e.target);
+  var selected,
+      monthName,
+      rentState = datepicker.state.rentDates.selected;
+  if (e.target.classList.contains("month-day")) {
+    selected = JSON.parse(e.target.dataset.day);
+    // monthName = datepicker.calendar.monthNames[selected.month].slice(0, 3) + selected.day;
+  }
+  console.log(selected);
+  // datepicker.setRentDate(rentState, monthName, selected.day, selected.month, selected.year, e.target);
+  // console.log(datepicker.state.rentDates[rentState]);
 }
 
 /**
@@ -180,50 +215,56 @@ Datepicker.prototype.hideDatepicker = function(e) {
   if (e.target.classList.contains("js-date-btn") || e.target.closest(".dropdown-calendar-wrap")) {
     return;
   }
-  datepicker.element.datepicker.classList.add("is-hidden");
+  datepicker.elements.datepicker.classList.add("is-hidden");
   datepicker.state.isDatepickerActive = false;
   document.body.removeEventListener("click", datepicker.hideDatepicker);
 }
 
 /**
+*	 Reset render dates
+*/
+// Datepicker.prototype.resetRenderDates = function() {
+//   this.state.rentDates.monthToRender = null;
+//   this.state.rentDates.yearToRender = null;
+// }
+
+/**
 *	 Add/remove class to indicate clicked button
 *  @param string
-*  @param string
 */
-Datepicker.prototype.indicateDate = function(toShow, toHide) {
-  this.element.datepicker.classList.add("date-" + toShow);
-  this.element.datepicker.classList.remove("date-" + toHide);
+Datepicker.prototype.indicateDate = function(selected) {
+  this.elements.datepicker.classList.add("date-" + selected);
+  if (this.state.rentDates.selected) {
+    this.elements.datepicker.classList.remove("date-" + this.state.rentDates.selected);
+  }
 }
 
 /**
 *	 Handle datepicker depending on clicked control
 *  @param string
-*  @param string
 */
-Datepicker.prototype.handleDatepicker = function(toShow, toHide) {
-  console.log(arguments);
+Datepicker.prototype.handleDatepicker = function(selected) {
   if (!this.state.isDatepickerInit) {
-    this.constructDatepicker(toShow);
+    this.constructDatepickerBase();
     this.state.isDatepickerInit = true;
   }
-  if (!this.state.isDatepickerActive || this.state.rentState !== toShow) {
-    console.log("this.state.isDatepickerActive", this.state.isDatepickerActive);
-    this.element.datepicker.classList.remove("is-hidden");
+  if (!this.state.isDatepickerActive || this.state.rentDates.hasOwnProperty('selected') && this.state.rentDates.selected !== selected) {
+    this.elements.datepicker.classList.remove("is-hidden");
     document.body.addEventListener("click", datepicker.hideDatepicker);
+    // First indicateDate, then set state!
+    this.indicateDate(selected);
+    this.state.rentDates.selected = selected;
     this.state.isDatepickerActive = true;
-    this.state.rentState = toShow;
-    this.indicateDate(toShow, toHide);
     this.renewDatepicker();
   }
 }
 
 /**
 * Sets element content according to received state data
-* @param object
 */
-Datepicker.prototype.setRentDate = function(data) {
-  // console.log(data);
-  this.element.rentBtn[data.trip].textContent = data.placeholder;
+Datepicker.prototype.setRentDate = function() {
+  this.elements.rentBtn.start.textContent = this.state.rentDates.startPlaceholder;
+  this.elements.rentBtn.end.textContent = this.state.rentDates.endPlaceholder;
   // if (year) {
   //   this.state.rentDates[date].year = year;
   // }
@@ -236,67 +277,53 @@ Datepicker.prototype.setRentDate = function(data) {
 }
 
 /**
-* Creates objects with initial dates for rent dates in state
+*   Pass initial data to RentDates constructor
 */
 Datepicker.prototype.setInitialRentState = function() {
-  this.state.rentDates.start = new RentData({
-    day: this.initialDate.day,
-    month: this.initialDate.month,
-    year: this.initialDate.year,
-    trip: "start"
-  });
-
-  var endState = {};
-  endState.day = this.initialDate.day;
-  endState.dayStart = this.initialDate.day;
-  endState.month = this.initialDate.month;
-  endState.year = this.initialDate.year;
-  endState.trip = "end";
-  var returnMonthDayCount = new Date(endState.year, endState.month + 1, 0).getDate();
+  var endDay = this.initialDate.day,
+      endMonth = this.initialDate.month,
+      endYear = this.initialDate.year,
+      endMonthDayCount = new Date(endYear, endMonth + 1, 0).getDate();
 
   for (var i = 0; i < 7; i++) {
-    if (endState.day < returnMonthDayCount) {
-      endState.day++;
+    if (endDay < endMonthDayCount) {
+      endDay++;
     } else {
-      endState.day = 1;
-      endState.month++;
-      returnMonthDayCount = new Date(endState.year, endState.month + 1, 0).getDate();
-      if (endState.month > 11) {
-        endState.month = 0;
-        endState.year++;
-        returnMonthDayCount = new Date(endState.year, endState.month + 1, 0).getDate();
+      endDay = 1;
+      endMonth++;
+      endMonthDayCount = new Date(endYear, endMonth + 1, 0).getDate();
+      if (endMonth > 11) {
+        endMonth = 0;
+        endYear++;
+        endMonthDayCount = new Date(endYear, endMonth + 1, 0).getDate();
       }
     }
   }
 
-  this.state.rentDates.end = new RentData(endState);
+  this.state.rentDates = new RentData({
+    selected: false,
+    startDay: this.initialDate.day,
+    startMonth: this.initialDate.month,
+    startYear: this.initialDate.year,
+    endDay: endDay,
+    endMonth: endMonth,
+    endYear: endYear
+  });
 }
 
 /**
-* Calls setInitialRentState and setRentDate method for both states
-*/
-Datepicker.prototype.setInitialRentDates = function() {
-  this.setInitialRentState();
-  this.setRentDate(this.state.rentDates.start);
-  this.setRentDate(this.state.rentDates.end);
-}
-
-/**
-* Assign event to form controls (header form buttons), set initial rent dates
+*   Assign event to form controls (header form buttons),
+*   set initial rent dates states
 */
 Datepicker.prototype.initiateDatepicker = function() {
-  var dateButton = Array.prototype.slice.call(this.element.nav);
-  this.element.rentBtn = {};
+  var dateButton = Array.prototype.slice.call(this.elements.nav);
+  this.elements.rentBtn = {};
   dateButton.forEach(function(button) {
-    if (button.dataset.tripDate === "start") {
-      this.element.rentBtn.start = button;
-      button.addEventListener("click", this.handleDatepicker.bind(this, "start", "end"));
-    } else if (button.dataset.tripDate === "end") {
-      this.element.rentBtn.end = button;
-      button.addEventListener("click", this.handleDatepicker.bind(this, "end", "start"));
-    }
+    this.elements.rentBtn[button.dataset.tripDate] = button;
+    button.addEventListener("click", this.handleDatepicker.bind(this, button.dataset.tripDate));
   }, this);
-  this.setInitialRentDates();
+  this.setInitialRentState();
+  this.setRentDate();
 }
 
 var datepicker = new Datepicker();
