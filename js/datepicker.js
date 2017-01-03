@@ -27,10 +27,13 @@ var RentData = function(data) {
     var _this = this;
     return new Date(_this.startYear, _this.startMonth, _this.startDay);
   },
-  this.startPlaceholder = this.startDate().toLocaleString(this.locale, {
-    month: "short",
-    day: "numeric"
-  }),
+  this.startPlaceholder = function() {
+    var _this = this;
+    return this.startDate().toLocaleString(this.locale, {
+      month: "short",
+      day: "numeric"
+    });
+  },
   this.endDay = data.endDay,
   this.endMonth = data.endMonth,
   this.endYear = data.endYear,
@@ -39,10 +42,13 @@ var RentData = function(data) {
     var _this = this;
     return new Date(_this.endYear, _this.endMonth, _this.endDay);
   },
-  this.endPlaceholder = this.endDate().toLocaleString(this.locale, {
-    month: "short",
-    day: "numeric"
-  })
+  this.endPlaceholder = function() {
+    var _this = this;
+    return this.endDate().toLocaleString(this.locale, {
+      month: "short",
+      day: "numeric"
+    })
+  }
 };
 
 /**
@@ -133,7 +139,7 @@ Datepicker.prototype.createDatepickerEvents = function() {
       this.elements.navBtn[button.dataset.navDir].classList.add("is-hidden");
     }
   }, this);
-  this.elements.calendarContainer.addEventListener("click", this.selectDate);
+  this.elements.calendarContainer.addEventListener("click", this.selectDate.bind(this));
 }
 
 /**
@@ -156,17 +162,11 @@ Datepicker.prototype.constructDatepickerBase = function() {
 *	 Handle click event on calendar day
 */
 Datepicker.prototype.selectDate = function(e) {
-  // console.log(e.target);
-  var selected,
-      monthName,
-      rentState = datepicker.state.rentDates.selected;
+  var monthName, elementData;
   if (e.target.classList.contains("month-day")) {
-    selected = JSON.parse(e.target.dataset.day);
-    // monthName = datepicker.calendar.monthNames[selected.month].slice(0, 3) + selected.day;
+    elementData = JSON.parse(e.target.dataset.day);
+    this.setRentDate(elementData)
   }
-  console.log(selected);
-  // datepicker.setRentDate(rentState, monthName, selected.day, selected.month, selected.year, e.target);
-  // console.log(datepicker.state.rentDates[rentState]);
 }
 
 /**
@@ -174,6 +174,7 @@ Datepicker.prototype.selectDate = function(e) {
 */
 Datepicker.prototype.hideDatepicker = function(e) {
   e.preventDefault();
+  console.log('e.target.closest(".dropdown-calendar-wrap")', e.target.closest(".dropdown-calendar-wrap"));
   if (e.target.classList.contains("js-date-btn") || e.target.closest(".dropdown-calendar-wrap")) {
     return;
   }
@@ -230,19 +231,30 @@ Datepicker.prototype.handleDatepicker = function(selected) {
 
 /**
 * Sets element content according to received state data
+* @param object
 */
-Datepicker.prototype.setRentDate = function() {
-  this.elements.rentBtn.start.textContent = this.state.rentDates.startPlaceholder;
-  this.elements.rentBtn.end.textContent = this.state.rentDates.endPlaceholder;
-  // if (year) {
-  //   this.state.rentDates[date].year = year;
-  // }
-  // if (el) {
-  //   this.state.rentDates[date].el = el;
-  // }
-  // if (date === "end") {
-  //   this.state.rentDates[date].startDay = this.state.rentDates["start"].day;
-  // }
+Datepicker.prototype.setRentDate = function(data) {
+  var _this = this;
+  var rentDates = this.state.rentDates;
+  if (arguments.length) {
+    if (rentDates.selected === "start") {
+      rentDates.startDay = data.day;
+      rentDates.startMonth = data.month;
+      rentDates.startYear = data.year;
+      // debugger
+      setTimeout(function() {
+        _this.handleDatepicker("end");
+      }, 150)
+    } else if (rentDates.selected === "end") {
+      rentDates.endDay = data.day;
+      rentDates.endMonth = data.month;
+      rentDates.endYear = data.year;
+      // debugger
+      this.renewDatepicker();
+    }
+  }
+  this.elements.rentBtn.start.textContent = rentDates.startPlaceholder();
+  this.elements.rentBtn.end.textContent = rentDates.endPlaceholder();
 }
 
 /**
