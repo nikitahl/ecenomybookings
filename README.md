@@ -22,8 +22,6 @@ Functionality - jQuery and JavaScript.
 
 * Autocomplete
 
-* Calendar
-
 * Datepicker
 
 
