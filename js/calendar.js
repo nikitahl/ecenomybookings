@@ -118,21 +118,21 @@ CalendarConstructor.prototype.distributeStartDays = function(data, tbody) {
 				dayObj.month = data.monthToRender;
 				dayObj.year = data.yearToRender;
 				var dayData = JSON.stringify(dayObj);
-				if ( data.monthToRender === this.currentMonth) {
+				if ( data.monthToRender === this.currentMonth && data.yearToRender === this.currentYear) {
 					// distribute days for current month
 					if ( day < this.currentDay ) {
 						weekRow.innerHTML += "<td class='past-day'>" + day + "</td>";
 					} else {
 						if (day === data.startDay) {
-							weekRow.innerHTML += "<td class='start-day' data-day='" + dayData + "'>" + day + "</td>";
+							weekRow.innerHTML += "<td class='month-day start-day' data-day='" + dayData + "'>" + day + "</td>";
 						} else {
 							weekRow.innerHTML += "<td class='month-day' data-day='" + dayData + "'>" + day + "</td>";
 						}
 					}
 				} else {
 					// distribute days for next months
-					if (day === data.startDay && data.monthToRender === data.startMonth) {
-						weekRow.innerHTML += "<td class='start-day' data-day='" + dayData + "'>" + day + "</td>";
+					if (day === data.startDay && data.monthToRender === data.startMonth && data.yearToRender === data.startYear) {
+						weekRow.innerHTML += "<td class='month-day start-day' data-day='" + dayData + "'>" + day + "</td>";
 					} else {
 						weekRow.innerHTML += "<td class='month-day' data-day='" + dayData + "'>" + day + "</td>";
 					}
@@ -169,41 +169,40 @@ CalendarConstructor.prototype.distributeEndDays = function(data, tbody) {
 				dayObj.month = data.monthToRender;
 				dayObj.year = data.yearToRender;
 				var dayData = JSON.stringify(dayObj);
-				if ( data.monthToRender === this.currentMonth) {
+				if ( data.monthToRender === this.currentMonth && data.yearToRender === this.currentYear) {
 					// distribute days for current month
 					if ( day < data.startDay ) {
 						weekRow.innerHTML += "<td class='past-day'>" + day + "</td>";
 					} else {
 						if (day === data.startDay && data.monthToRender === data.startMonth) {
-							weekRow.innerHTML += "<td class='start-day' data-day='" + dayData + "'>" + day + "</td>";
+							weekRow.innerHTML += "<td class='month-day start-day' data-day='" + dayData + "'>" + day + "</td>";
 						} else if (
-							day > data.startDay && data.monthToRender === data.startMonth ||
-							day < data.endDay && data.monthToRender === data.endMonth ||
+							day > data.startDay && data.monthToRender === data.startMonth && day < data.endDay && data.monthToRender === data.endMonth ||
 							data.monthToRender > data.startMonth && data.yearToRender === data.startYear && data.monthToRender < data.endMonth && data.yearToRender === data.endYear ||
 							data.monthToRender < data.startMonth && data.yearToRender < data.startYear && data.monthToRender < data.endMonth && data.yearToRender === data.endYear
 							) {
-							weekRow.innerHTML += "<td class='selected-day' data-day='" + dayData + "'>" + day + "</td>";
-						} else if (day === data.endDay && data.monthToRender === data.endMonth) {
-							weekRow.innerHTML += "<td class='end-day' data-day='" + dayData + "'>" + day + "</td>";
+							weekRow.innerHTML += "<td class='month-day selected-day' data-day='" + dayData + "'>" + day + "</td>";
+						} else if (data.monthToRender === data.endMonth && day === data.endDay) {
+							weekRow.innerHTML += "<td class='month-day end-day' data-day='" + dayData + "'>" + day + "</td>";
 						} else {
 							weekRow.innerHTML += "<td class='month-day' data-day='" + dayData + "'>" + day + "</td>";
 						}
 					}
 				} else {
 					// distribute days for next months
-					if (day === data.startDay && data.monthToRender === data.startMonth) {
-						weekRow.innerHTML += "<td class='start-day' data-day='" + dayData + "'>" + day + "</td>";
+					if (day === data.startDay && data.monthToRender === data.startMonth && data.yearToRender === data.startYear) {
+						weekRow.innerHTML += "<td class='month-day start-day' data-day='" + dayData + "'>" + day + "</td>";
 					} else if (
-						day > data.startDay && data.monthToRender === data.startMonth ||
-						day < data.endDay && data.monthToRender === data.endMonth ||
+						day > data.startDay && data.monthToRender === data.startMonth && data.yearToRender === data.startYear ||
+						day < data.endDay && data.monthToRender === data.endMonth && data.yearToRender === data.endYear ||
 						data.monthToRender > data.startMonth && data.yearToRender === data.startYear && data.monthToRender < data.endMonth && data.yearToRender === data.endYear ||
 						data.monthToRender < data.startMonth && data.yearToRender < data.startYear && data.monthToRender < data.endMonth && data.yearToRender === data.endYear
 					) {
-						weekRow.innerHTML += "<td class='selected-day' data-day='" + dayData + "'>" + day + "</td>";
-					} else if (day === data.endDay && data.monthToRender === data.endMonth) {
-						weekRow.innerHTML += "<td class='end-day' data-day='" + dayData + "'>" + day + "</td>";
+						weekRow.innerHTML += "<td class='month-day selected-day' data-day='" + dayData + "'>" + day + "</td>";
+					} else if (day === data.endDay && data.monthToRender === data.endMonth && data.yearToRender === data.endYear) {
+						weekRow.innerHTML += "<td class='month-day end-day' data-day='" + dayData + "'>" + day + "</td>";
 					} else {
-						weekRow.innerHTML += "<td class='month-day' data-day='" + dayData + "'>" + day + "</td>";
+						weekRow.innerHTML += "<td class='month-day month-day' data-day='" + dayData + "'>" + day + "</td>";
 					}
 				}
 				// increment day counter
@@ -254,19 +253,17 @@ CalendarConstructor.prototype.createMonthTableWrap = function(monthData) {
 * @param Object with month data
 *	@return monthData Updated monthData object
 */
-CalendarConstructor.prototype.updateMonthData = function(monthData, month, year) {
+CalendarConstructor.prototype.updateMonthData = function(monthData) {
 	if ( monthData.renderIteration ) {
-		console.log('iteration > 0');
 		if (monthData.monthToRender < 11) {
 			monthData.monthToRender = ++monthData.monthToRender;
 		} else {
 			monthData.monthToRender = 0;
-			monthData.yearToRender = ++year;
+			monthData.yearToRender = ++monthData.yearToRender;
 		}
 	} else {
-		console.log('iteration < 0');
-		monthData.monthToRender = month;
-		monthData.yearToRender = year;
+		monthData.monthToRender = monthData.monthToRender;
+		monthData.yearToRender = monthData.yearToRender;
 	}
 	return monthData;
 }
@@ -278,16 +275,7 @@ CalendarConstructor.prototype.updateMonthData = function(monthData, month, year)
 */
 CalendarConstructor.prototype.createMonthWrapper = function(data) {
 	var div = this.createNewElement("div", "calendar-wrap");
-	var monthData;
-	// if ( data.hasOwnProperty("monthToRender") && data.monthToRender !== null ) {
-	// 	console.log('hasOwnProperty("monthToRender")');
-	// 	monthData = this.updateMonthData(data, data.monthToRender, data.yearToRender);
-	// } else
-	if ( data.selected === "start" ) {
-		monthData = this.updateMonthData(data, data.startMonth, data.startYear);
-	} else {
-		monthData = this.updateMonthData(data, data.endMonth, data.endYear);
-	}
+	var monthData = this.updateMonthData(data);
 	div.appendChild(this.createMonthNameWrap(monthData));
 	div.appendChild(this.createMonthTableWrap(monthData));
 	return div;
@@ -298,9 +286,13 @@ CalendarConstructor.prototype.createMonthWrapper = function(data) {
 * @param object
 */
 CalendarConstructor.prototype.renderCalendar = function(data) {
+	var month = data.monthToRender;
+	var year = data.yearToRender;
 	var calendarContainer = document.getElementById(data.id);
 	for(var i = 0; i < data.count; i++) {
 		data.renderIteration = i;
 		calendarContainer.appendChild(this.createMonthWrapper(data));
 	}
+	data.monthToRender = month;
+	data.yearToRender = year;
 }

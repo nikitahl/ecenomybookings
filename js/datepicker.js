@@ -76,34 +76,12 @@ var Datepicker = function() {
 *	 Display datepicker Previous button depending on visible month
 */
 Datepicker.prototype.togglePrevButton = function() {
-  var state = this.state.rentDates,
-      month = state.selected === "start" ? state.startMonth : state.endMonth,
-      year = state.selected === "start" ? state.startYear : state.endYear;
-  if (month === this.initialDate.month && year === this.initialDate.year) {
+  var state = this.state.rentDates;
+  if (state.monthToRender === this.initialDate.month && state.yearToRender === this.initialDate.year) {
     this.elements.navBtn.prev.classList.add("is-hidden");
   } else {
     this.elements.navBtn.prev.classList.remove("is-hidden");
   }
-  // TODO: logic for back button
-  // if ( state.selected === "start") {
-  //   month = state.startMonth;
-  //   year = state.startYear;
-  //   if (month === this.initialDate.month && year === this.initialDate.year) {
-  //     this.elements.navBtn.prev.classList.add("is-hidden");
-  //   } else {
-  //     this.elements.navBtn.prev.classList.remove("is-hidden");
-  //   }
-  // } else {
-  //   month = state.endMonth;
-  //   year = state.endYear;
-  //   if (month > state.startMonth + 2 && year === state.startYear ||
-  //
-  //     ) {
-  //     this.elements.navBtn.prev.classList.add("is-hidden");
-  //   } else {
-  //     this.elements.navBtn.prev.classList.remove("is-hidden");
-  //   }
-  // }
 }
 
 /**
@@ -114,33 +92,8 @@ Datepicker.prototype.renewDatepicker = function() {
   while (this.elements.calendarContainer.firstChild) {
     this.elements.calendarContainer.removeChild(this.elements.calendarContainer.firstChild);
   }
-  this.togglePrevButton();
   this.calendar.renderCalendar(this.state.rentDates);
-}
-
-/**
-*	 Increment or decrement month depending on state
-*  @param number
-*  @param number
-*/
-Datepicker.prototype.calculateMonth = function(button, month, year) {
-  var rentDate = this.state.rentDates;
-  console.log('calculateMonth', button);
-  if (button === "next") {
-    if (month < 11) {
-      rentDate.monthToRender = ++month;
-    } else {
-      rentDate.monthToRender = 0;
-      rentDate.yearToRender = ++year;
-    }
-  } else {
-    if (month > 0) {
-      rentDate.monthToRender = --month;
-    } else {
-      rentDate.monthToRender = 11;
-      rentDate.yearToRender = --year;
-    }
-  }
+  this.togglePrevButton();
 }
 
 /**
@@ -148,13 +101,22 @@ Datepicker.prototype.calculateMonth = function(button, month, year) {
 *  @param event
 */
 Datepicker.prototype.handleDatepickerNav = function(e) {
-  var rentDate = this.state.rentDates;
-  if (rentDate.selected === "start") {
-    this.calculateMonth(e.target.dataset.navDir, rentDate.startMonth, rentDate.startYear);
+  var state = this.state.rentDates;
+  if (e.target.dataset.navDir === "next") {
+    if (state.monthToRender < 11) {
+      state.monthToRender = ++state.monthToRender;
+    } else {
+      state.monthToRender = 0;
+      state.yearToRender = ++state.yearToRender;
+    }
   } else {
-    this.calculateMonth(e.target.dataset.navDir, rentDate.endMonth, rentDate.endYear);
+    if (state.monthToRender > 0) {
+      state.monthToRender = --state.monthToRender;
+    } else {
+      state.monthToRender = 11;
+      state.yearToRender = --state.yearToRender;
+    }
   }
-  console.log('handleDatepickerNav', rentDate);
   this.renewDatepicker();
 }
 
@@ -221,12 +183,17 @@ Datepicker.prototype.hideDatepicker = function(e) {
 }
 
 /**
-*	 Reset render dates
+*	 Set render dates
 */
-// Datepicker.prototype.resetRenderDates = function() {
-//   this.state.rentDates.monthToRender = null;
-//   this.state.rentDates.yearToRender = null;
-// }
+Datepicker.prototype.setRenderDates = function() {
+  if (this.state.rentDates.selected === "start") {
+    this.state.rentDates.monthToRender = this.state.rentDates.startMonth;
+    this.state.rentDates.yearToRender = this.state.rentDates.startYear;
+  } else {
+    this.state.rentDates.monthToRender = this.state.rentDates.endMonth;
+    this.state.rentDates.yearToRender = this.state.rentDates.endYear;
+  }
+}
 
 /**
 *	 Add/remove class to indicate clicked button
@@ -255,7 +222,9 @@ Datepicker.prototype.handleDatepicker = function(selected) {
     this.indicateDate(selected);
     this.state.rentDates.selected = selected;
     this.state.isDatepickerActive = true;
+    this.setRenderDates();
     this.renewDatepicker();
+    this.setRenderDates();
   }
 }
 
