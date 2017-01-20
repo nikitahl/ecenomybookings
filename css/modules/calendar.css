@@ -123,6 +123,12 @@
   padding: 1px 0;
   font-size: 1.2rem;
   text-align: center;
+  transition: background-color .5s;
+}
+
+.month-day:hover {
+  background-color: #eee;
+  cursor: pointer;
 }
 
 .past-day {
@@ -132,6 +138,14 @@
 .selected-day {
   background-color: #add8e6;
   cursor: pointer;
+}
+
+.selected-day:hover {
+  background-color: #90cce0;
+}
+
+.selected-day:hover + .end-day::before {
+  border-left: 7px solid #90cce0;
 }
 
 .start-day,
@@ -153,6 +167,7 @@
 	border-left: 7px solid #008aff;
 	border-bottom: 16px solid transparent;
 	z-index: 2;
+  transition: border .5s;
 }
 
 .end-day::before {
@@ -165,11 +180,16 @@
   border-bottom: 16px solid transparent;
   border-left: 7px solid #add8e6;
   border-top: 16px solid transparent;
+  transition: border .5s;
 }
 
-.month-day:hover {
-  background-color: #eee;
-  cursor: pointer;
+.start-day:hover,
+.end-day:hover {
+  background-color: #007af3;
+}
+
+.start-day:hover::after {
+  border-left: 7px solid #007af3;
 }
 
 .calendar-months {
