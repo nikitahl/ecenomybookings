@@ -79,6 +79,16 @@ var Datepicker = function() {
 };
 
 /**
+*	 Get month day count in a given month
+*  @param number month
+*  @param numebr year
+*  @return number
+*/
+Datepicker.prototype.getMonthDayCount = function(month, year) {
+  return new Date(year, month + 1, 0).getDate();
+}
+
+/**
 *	 Display datepicker Previous button depending on visible month
 */
 Datepicker.prototype.togglePrevButton = function() {
@@ -162,21 +172,26 @@ Datepicker.prototype.constructDatepickerBase = function() {
 *	 Handle click event on calendar day
 */
 Datepicker.prototype.selectDate = function(e) {
-  var monthName, elementData;
-  if (e.target.classList.contains("month-day")) {
-    elementData = JSON.parse(e.target.dataset.day);
-    this.setRentDate(elementData)
+  if (this.state.rentDates.selected !== "end") {
+    if (e.target.classList.contains("month-day")) {
+      this.setRentDate(JSON.parse(e.target.dataset.day));
+    }
+  } else {
+    if (e.target.classList.contains("month-day") && !e.target.classList.contains("start-day")) {
+      this.setRentDate(JSON.parse(e.target.dataset.day));
+    }
   }
 }
 
 /**
-*	 Hide datepicker if clicked outside and remove event
+*	 Hide datepicker if clicked outside or called manually and remove event
 */
 Datepicker.prototype.hideDatepicker = function(e) {
-  e.preventDefault();
-  console.log('e.target.closest(".dropdown-calendar-wrap")', e.target.closest(".dropdown-calendar-wrap"));
-  if (e.target.classList.contains("js-date-btn") || e.target.closest(".dropdown-calendar-wrap")) {
-    return;
+  if (e) {
+    e.preventDefault();
+    if (e.target.classList.contains("js-date-btn") || e.target.closest(".dropdown-calendar-wrap")) {
+      return;
+    }
   }
   datepicker.elements.datepicker.classList.add("is-hidden");
   datepicker.state.isDatepickerActive = false;
@@ -201,10 +216,10 @@ Datepicker.prototype.setRenderDates = function() {
 *  @param string
 */
 Datepicker.prototype.indicateDate = function(selected) {
-  this.elements.datepicker.classList.add("date-" + selected);
   if (this.state.rentDates.selected) {
     this.elements.datepicker.classList.remove("date-" + this.state.rentDates.selected);
   }
+  this.elements.datepicker.classList.add("date-" + selected);
 }
 
 /**
@@ -216,7 +231,7 @@ Datepicker.prototype.handleDatepicker = function(selected) {
     this.constructDatepickerBase();
     this.state.isDatepickerInit = true;
   }
-  if (!this.state.isDatepickerActive || this.state.rentDates.hasOwnProperty('selected') && this.state.rentDates.selected !== selected) {
+  if (!this.state.isDatepickerActive || this.state.rentDates.hasOwnProperty("selected") && this.state.rentDates.selected !== selected) {
     this.elements.datepicker.classList.remove("is-hidden");
     document.body.addEventListener("click", datepicker.hideDatepicker);
     // First indicateDate, then set state!
@@ -225,8 +240,27 @@ Datepicker.prototype.handleDatepicker = function(selected) {
     this.state.isDatepickerActive = true;
     this.setRenderDates();
     this.renewDatepicker();
+    // reset monthToRender/yearToRender for further renewals
     this.setRenderDates();
   }
+}
+
+/**
+* Hightlight dates on hover
+*/
+Datepicker.prototype.handleDynamicRange = function() {
+  console.log('handleDynamicRange');
+}
+
+/**
+* Check if selected start date is lesser than existing end date
+* @param object
+* @return boolean
+*/
+Datepicker.prototype.checkEndDay = function(rentDates) {
+  return rentDates.startDay < rentDates.endDay &&
+         rentDates.startMonth === rentDates.endMonth &&
+         rentDates.startYear === rentDates.endYear
 }
 
 /**
@@ -241,16 +275,32 @@ Datepicker.prototype.setRentDate = function(data) {
       rentDates.startDay = data.day;
       rentDates.startMonth = data.month;
       rentDates.startYear = data.year;
-      // debugger
+      if (!this.checkEndDay(rentDates)) {
+        var monthDayCount = this.getMonthDayCount(rentDates.startMonth, rentDates.startYear);
+        var compareDay = data.day + 6 > monthDayCount;
+        rentDates.endDay = compareDay ? data.day + 6 - monthDayCount : data.day + 6;
+        if (compareDay) {
+          if (++data.month > 11) {
+            rentDates.endMonth = 0;
+            rentDates.endYear = ++data.year;
+          } else {
+            rentDates.endMonth = ++data.month;
+            rentDates.endYear = data.year;
+          }
+        } else {
+          rentDates.endMonth = data.month;
+          rentDates.endYear = data.year;
+        }
+      }
       setTimeout(function() {
         _this.handleDatepicker("end");
       }, 150)
+      this.handleDynamicRange();
     } else if (rentDates.selected === "end") {
       rentDates.endDay = data.day;
       rentDates.endMonth = data.month;
       rentDates.endYear = data.year;
-      // debugger
-      this.renewDatepicker();
+      this.hideDatepicker();
     }
   }
   this.elements.rentBtn.start.textContent = rentDates.startPlaceholder();
