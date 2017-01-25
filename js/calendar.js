@@ -101,16 +101,34 @@ CalendarConstructor.prototype.getMonthDays = function(month, year) {
 };
 
 /**
+*	Get HTML day template for table
+* @param string
+* @param JSON string
+* @param string
+*	@return string
+*/
+CalendarConstructor.prototype.getDayTemplate = function(day, data, type) {
+	return "<td class='month-day " + type + "' data-day='" + data + "'>" + day + "</td>";
+}
+
+/**
 *	Distribute month days to the according table cells if start date is selected
 * @param monthData object
 *	@return HTML
 */
 CalendarConstructor.prototype.distributeStartDays = function(data, tbody) {
-	var monthDays = this.getMonthDays(data.monthToRender, data.yearToRender),
-			day = 1;
-	var dayCount = monthDays.monthDaysCount();
+	var day = 1,
+			startDay = data.startDay,
+			startMonth = data.startMonth,
+			startYear = data.startYear,
+			monthToRender = data.monthToRender,
+			yearToRender = data.yearToRender,
+			monthDays = this.getMonthDays(monthToRender, yearToRender),
+			dayCount = monthDays.monthDaysCount();
+
 	while ( day < dayCount ) {
-		var weekRow = document.createElement("tr");
+		var html = "",
+				weekRow = document.createElement("tr");
 		for ( var i = 0; i < 7; i++ ) {
 			if ( monthDays.weekDay(day) === i ) {
 				var dayObj = {};
@@ -118,35 +136,24 @@ CalendarConstructor.prototype.distributeStartDays = function(data, tbody) {
 				dayObj.month = data.monthToRender;
 				dayObj.year = data.yearToRender;
 				var dayData = JSON.stringify(dayObj);
-				if ( data.monthToRender === this.currentMonth && data.yearToRender === this.currentYear) {
-					// distribute days for current month
-					if ( day < this.currentDay ) {
-						weekRow.innerHTML += "<td class='past-day'>" + day + "</td>";
-					} else {
-						if (day === data.startDay) {
-							weekRow.innerHTML += "<td class='month-day start-day' data-day='" + dayData + "'>" + day + "</td>";
-						} else {
-							weekRow.innerHTML += "<td class='month-day' data-day='" + dayData + "'>" + day + "</td>";
-						}
-					}
+				if ( day < this.currentDay && monthToRender === this.currentMonth && yearToRender === this.currentYear) {
+					html += "<td class='past-day'>" + day + "</td>";
+				} else if (day === startDay && monthToRender === startMonth && yearToRender === startYear) {
+					html += this.getDayTemplate(day, dayData, 'start-day');
 				} else {
-					// distribute days for next months
-					if (day === data.startDay && data.monthToRender === data.startMonth && data.yearToRender === data.startYear) {
-						weekRow.innerHTML += "<td class='month-day start-day' data-day='" + dayData + "'>" + day + "</td>";
-					} else {
-						weekRow.innerHTML += "<td class='month-day' data-day='" + dayData + "'>" + day + "</td>";
-					}
+					html += this.getDayTemplate(day, dayData, '');
 				}
 				// increment day counter
 				day++;
 			} else {
-				weekRow.innerHTML += "<td></td>";
+				html += "<td></td>";
 			}
 
 			if ( day > dayCount ) {
 				break;
 			}
 		}
+		weekRow.innerHTML = html;
 		tbody.appendChild(weekRow);
 	}
 }
@@ -157,11 +164,21 @@ CalendarConstructor.prototype.distributeStartDays = function(data, tbody) {
 *	@return HTML
 */
 CalendarConstructor.prototype.distributeEndDays = function(data, tbody) {
-	var monthDays = this.getMonthDays(data.monthToRender, data.yearToRender),
-			day = 1;
-	var dayCount = monthDays.monthDaysCount();
+	var day = 1,
+			startDay = data.startDay,
+			startMonth = data.startMonth,
+			startYear = data.startYear,
+			endDay = data.endDay,
+			endMonth = data.endMonth,
+			endYear = data.endYear,
+			monthToRender = data.monthToRender,
+			yearToRender = data.yearToRender,
+			monthDays = this.getMonthDays(monthToRender, yearToRender),
+			dayCount = monthDays.monthDaysCount();
+
 	while ( day < dayCount ) {
-		var weekRow = document.createElement("tr");
+		var html = "",
+				weekRow = document.createElement("tr");
 		for ( var i = 0; i < 7; i++ ) {
 			if ( monthDays.weekDay(day) === i ) {
 				var dayObj = {};
@@ -169,52 +186,52 @@ CalendarConstructor.prototype.distributeEndDays = function(data, tbody) {
 				dayObj.month = data.monthToRender;
 				dayObj.year = data.yearToRender;
 				var dayData = JSON.stringify(dayObj);
-				if ( data.monthToRender === this.currentMonth && data.yearToRender === this.currentYear) {
-					// distribute days for current month
-					if ( day < data.startDay ) {
-						weekRow.innerHTML += "<td class='past-day'>" + day + "</td>";
-					} else {
-						if (day === data.startDay && data.monthToRender === data.startMonth) {
-							weekRow.innerHTML += "<td class='month-day start-day' data-day='" + dayData + "'>" + day + "</td>";
-						} else if (
-							day > data.startDay && data.monthToRender === data.startMonth && day < data.endDay && data.monthToRender === data.endMonth ||
-							data.monthToRender > data.startMonth && data.yearToRender === data.startYear && data.monthToRender < data.endMonth && data.yearToRender === data.endYear ||
-							data.monthToRender < data.startMonth && data.yearToRender < data.startYear && data.monthToRender < data.endMonth && data.yearToRender === data.endYear
-							) {
-							weekRow.innerHTML += "<td class='month-day selected-day' data-day='" + dayData + "'>" + day + "</td>";
-						} else if (data.monthToRender === data.endMonth && day === data.endDay) {
-							weekRow.innerHTML += "<td class='month-day end-day' data-day='" + dayData + "'>" + day + "</td>";
+				if (day < startDay && monthToRender === startMonth && yearToRender === startYear ||
+					monthToRender < startMonth && yearToRender === startYear ||
+					monthToRender > startMonth && yearToRender < startYear) {
+					html += "<td class='past-day'>" + day + "</td>";
+				} else if (monthToRender === startMonth && yearToRender === startYear) {
+					if (day === startDay) {
+						html += this.getDayTemplate(day, dayData, 'start-day');
+					} else if (startMonth === endMonth && startYear === endYear) {
+						if (day === endDay) {
+							html += this.getDayTemplate(day, dayData, 'end-day');
+						} else if (day > startDay && day < endDay) {
+							html += this.getDayTemplate(day, dayData, 'selected-day');
 						} else {
-							weekRow.innerHTML += "<td class='month-day' data-day='" + dayData + "'>" + day + "</td>";
+							html += this.getDayTemplate(day, dayData, '');
 						}
-					}
-				} else {
-					// distribute days for next months
-					if (day === data.startDay && data.monthToRender === data.startMonth && data.yearToRender === data.startYear) {
-						weekRow.innerHTML += "<td class='month-day start-day' data-day='" + dayData + "'>" + day + "</td>";
-					} else if (
-						day > data.startDay && data.monthToRender === data.startMonth && data.yearToRender === data.startYear ||
-						day < data.endDay && data.monthToRender === data.endMonth && data.yearToRender === data.endYear ||
-						data.monthToRender > data.startMonth && data.yearToRender === data.startYear && data.monthToRender < data.endMonth && data.yearToRender === data.endYear ||
-						data.monthToRender < data.startMonth && data.yearToRender < data.startYear && data.monthToRender < data.endMonth && data.yearToRender === data.endYear
-					) {
-						weekRow.innerHTML += "<td class='month-day selected-day' data-day='" + dayData + "'>" + day + "</td>";
-					} else if (day === data.endDay && data.monthToRender === data.endMonth && data.yearToRender === data.endYear) {
-						weekRow.innerHTML += "<td class='month-day end-day' data-day='" + dayData + "'>" + day + "</td>";
 					} else {
-						weekRow.innerHTML += "<td class='month-day month-day' data-day='" + dayData + "'>" + day + "</td>";
+						html += this.getDayTemplate(day, dayData, 'selected-day');
 					}
+				} else if (monthToRender === endMonth && yearToRender === endYear) {
+					if (day === endDay) {
+						html += this.getDayTemplate(day, dayData, 'end-day');
+					} else if (day < endDay) {
+						html += this.getDayTemplate(day, dayData, 'selected-day');
+					} else {
+						html += this.getDayTemplate(day, dayData, '');
+					}
+				} else if (yearToRender === startYear && yearToRender === endYear && monthToRender > startMonth && monthToRender < endMonth ||
+					yearToRender === startYear && yearToRender < endYear && monthToRender > startMonth ||
+					yearToRender > startYear && yearToRender === endYear && monthToRender < endMonth ||
+					yearToRender > startYear && yearToRender < endYear) {
+						html += this.getDayTemplate(day, dayData, 'selected-day');
+				} else {
+					html += this.getDayTemplate(day, dayData, '');
 				}
+
 				// increment day counter
 				day++;
 			} else {
-				weekRow.innerHTML += "<td></td>";
+				html += "<td></td>";
 			}
 
 			if ( day > dayCount ) {
 				break;
 			}
 		}
+		weekRow.innerHTML = html;
 		tbody.appendChild(weekRow);
 	}
 }
