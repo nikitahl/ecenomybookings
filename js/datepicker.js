@@ -280,11 +280,11 @@ Datepicker.prototype.setRentDate = function(data) {
         var compareDay = data.day + 6 > monthDayCount;
         rentDates.endDay = compareDay ? data.day + 6 - monthDayCount : data.day + 6;
         if (compareDay) {
-          if (++data.month > 11) {
+          if (data.month++ > 11) {
             rentDates.endMonth = 0;
-            rentDates.endYear = ++data.year;
+            rentDates.endYear = data.year++;
           } else {
-            rentDates.endMonth = ++data.month;
+            rentDates.endMonth = data.month++;
             rentDates.endYear = data.year;
           }
         } else {
