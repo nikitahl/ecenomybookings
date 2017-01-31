@@ -22,7 +22,7 @@ var RentData = function(data) {
   this.startDay = data.startDay,
   this.startMonth = data.startMonth,
   this.startYear = data.startYear,
-  this.startElement = null,
+  // this.startElement = null,
   this.startDate = function() {
     var _this = this;
     return new Date(_this.startYear, _this.startMonth, _this.startDay);
@@ -37,7 +37,7 @@ var RentData = function(data) {
   this.endDay = data.endDay,
   this.endMonth = data.endMonth,
   this.endYear = data.endYear,
-  this.endElement = null,
+  // this.endElement = null,
   this.endDate = function() {
     var _this = this;
     return new Date(_this.endYear, _this.endMonth, _this.endDay);
@@ -246,10 +246,40 @@ Datepicker.prototype.handleDatepicker = function(selected) {
 }
 
 /**
-* Hightlight dates on hover
+* Highlight range on hover
+*/
+Datepicker.prototype.highlightRange = function(e) {
+  console.log('highlightRange', e.target);
+  if (e.target.classList.contains("month-day")) {
+
+  }
+}
+
+/**
+* Fade range on hover
+*/
+Datepicker.prototype.fadeRange = function(e) {
+  console.log('fadeRange', e.target);
+  if (e.target.classList.contains("month-day")) {
+
+  }
+}
+
+/**
+* Handle dates range highlight on hover
 */
 Datepicker.prototype.handleDynamicRange = function() {
   console.log('handleDynamicRange');
+  this.elements.datepicker.addEventListener("mouseover", datepicker.highlightRange);
+  this.elements.datepicker.addEventListener("mouseout", datepicker.fadeRange);
+}
+
+/**
+* Remove dates range highlight
+*/
+Datepicker.prototype.removeDynamicRange = function() {
+  this.elements.datepicker.removeEventListener("mouseover", datepicker.highlightRange);
+  this.elements.datepicker.removeEventListener("mouseout", datepicker.fadeRange);
 }
 
 /**
@@ -270,6 +300,7 @@ Datepicker.prototype.checkEndDay = function(rentDates) {
 Datepicker.prototype.setRentDate = function(data) {
   var _this = this;
   var rentDates = this.state.rentDates;
+  var simulateClick;
   if (arguments.length) {
     if (rentDates.selected === "start") {
       rentDates.startDay = data.day;
@@ -292,7 +323,7 @@ Datepicker.prototype.setRentDate = function(data) {
           rentDates.endYear = data.year;
         }
       }
-      setTimeout(function() {
+      simulateClick = setTimeout(function() {
         _this.handleDatepicker("end");
       }, 150)
       this.handleDynamicRange();
@@ -300,6 +331,8 @@ Datepicker.prototype.setRentDate = function(data) {
       rentDates.endDay = data.day;
       rentDates.endMonth = data.month;
       rentDates.endYear = data.year;
+      clearTimeout(simulateClick);
+      this.removeDynamicRange();
       this.hideDatepicker();
     }
   }
