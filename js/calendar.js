@@ -193,6 +193,8 @@ CalendarConstructor.prototype.distributeEndDays = function(data, tbody) {
 				} else if (monthToRender === startMonth && yearToRender === startYear) {
 					if (day === startDay) {
 						html += this.getDayTemplate(day, dayData, 'start-day');
+					} else if (data.range) {
+						html += this.getDayTemplate(day, dayData, '');
 					} else if (startMonth === endMonth && startYear === endYear) {
 						if (day === endDay) {
 							html += this.getDayTemplate(day, dayData, 'end-day');
@@ -204,6 +206,8 @@ CalendarConstructor.prototype.distributeEndDays = function(data, tbody) {
 					} else {
 						html += this.getDayTemplate(day, dayData, 'selected-day');
 					}
+				} else if (data.range) {
+					html += this.getDayTemplate(day, dayData, '');
 				} else if (monthToRender === endMonth && yearToRender === endYear) {
 					if (day === endDay) {
 						html += this.getDayTemplate(day, dayData, 'end-day');
