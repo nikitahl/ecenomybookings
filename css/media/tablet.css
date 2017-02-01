@@ -243,8 +243,14 @@
     left: 185px;
   }
 
-  .dropdown-calendar-wrap::before {
+  .date-start::before,
+  .date-start::after {
     left: 185px;
+  }
+
+  .date-end::before,
+  .date-end::after {
+    left: 352px;
   }
 
   .dropdown-locations-wrap {

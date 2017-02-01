@@ -244,10 +244,16 @@
 
   /* Searchform Dropdown */
 
-  .dropdown-calendar-wrap::before,
-  .dropdown-calendar::before {
+  .date-start::before,
+  .date-start::after {
     left: 150px;
   }
+
+  .date-end::before,
+  .date-end::after {
+    left: 230px;
+  }
+
 
   .header-searchform .dropdown-content {
     top: 46px;
