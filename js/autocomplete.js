@@ -174,7 +174,14 @@
 					suggestedCityLocations = this.citiesFound[0].locations;
 			var inputValue = searchInput.value;
 			var l = inputValue.length;
-			acWrap.innerHTML = "<div class='suggested-city js-suggested-item'>" + "<b>" + inputValue + "</b>" +  suggestedCity.slice(l) + ", " + "<span class='country-faded'>" + suggestedCityCountry + "</span>" + "</div>";
+			var c;
+			var strPos = suggestedCity.toLowerCase().indexOf(inputValue);
+			if (strPos > 0) {
+				c = suggestedCity.slice(0, strPos) + "<b>" + suggestedCity.slice(strPos, strPos + l) + "</b>" + suggestedCity.slice(strPos + l);
+			} else if (strPos === 0) {
+				c = "<b>" + suggestedCity.slice(0,l) + "</b>" +  suggestedCity.slice(l);
+			}
+			acWrap.innerHTML = "<div class='suggested-city js-suggested-item'>" + c + ", " + "<span class='country-faded'>" + suggestedCityCountry + "</span>" + "</div>";
 			acWrap.innerHTML += "<div class='suggested-city-airport js-suggested-item'>" + suggestedCityAirport + "</div>";
 			for (var i = 0; i < suggestedCityLocations.length; i++) {
 				acWrap.innerHTML += "<div class='suggested-city-locations js-suggested-item'>" + suggestedCityLocations[i] + "</div>";
@@ -190,7 +197,14 @@
 							suggestedCityCountry = citiesFound[city].country;
 					var inputValue = searchInput.value;
 					var l = inputValue.length;
-					acWrap.innerHTML += "<div class='suggested-cities js-suggested-item'>" + "<b>" + inputValue + "</b>" +  suggestedCity.slice(l) + ", " + "<span class='country-faded'>" + suggestedCityCountry + "</span>" + "</div>";
+					var c;
+					var strPos = suggestedCity.toLowerCase().indexOf(inputValue);
+					if (strPos > 0) {
+						c = suggestedCity.slice(0, strPos) + "<b>" + suggestedCity.slice(strPos, strPos + l) + "</b>" + suggestedCity.slice(strPos + l);
+					} else if (strPos === 0) {
+						c = "<b>" + suggestedCity.slice(0,l) + "</b>" +  suggestedCity.slice(l);
+					}
+					acWrap.innerHTML += "<div class='suggested-cities js-suggested-item'>" + c + ", " + "<span class='country-faded'>" + suggestedCityCountry + "</span>" + "</div>";
 				}
 			}
 		},
