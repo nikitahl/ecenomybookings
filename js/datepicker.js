@@ -1,14 +1,19 @@
 "use strict";
 
-// polyfill to use closest() method on an element
-this.Element && function(ElementPrototype) {
-  ElementPrototype.closest = ElementPrototype.closest ||
-  function(selector) {
-    var el = this;
-    while (el.matches && !el.matches(selector)) el = el.parentNode;
-    return el.matches ? el : null;
-  }
-}(Element.prototype);
+// polyfill to use closest() method on an element crossbrowser
+if (window.Element && !Element.prototype.closest) {
+    Element.prototype.closest = 
+    function(s) {
+        var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+            i,
+            el = this;
+        do {
+            i = matches.length;
+            while (--i >= 0 && matches.item(i) !== el) {};
+        } while ((i < 0) && (el = el.parentElement)); 
+        return el;
+    };
+}
 
 /**
 *   Rent Data constructor, holds information about rent dates
@@ -154,7 +159,10 @@ Datepicker.prototype.createDatepickerEvents = function() {
 */
 Datepicker.prototype.constructDatepickerBase = function() {
   var datepickerWrapper = document.createElement("div");
-  datepickerWrapper.classList.add("dropdown-calendar-wrap", "dropdown-content", "is-hidden");
+  // multiple classList.add declarations to support IE
+  datepickerWrapper.classList.add("dropdown-calendar-wrap");
+  datepickerWrapper.classList.add("dropdown-content");
+  datepickerWrapper.classList.add("is-hidden");
   datepickerWrapper.innerHTML += "<div class='prev-month js-months-nav' data-nav-dir='prev'></div>";
   datepickerWrapper.innerHTML += "<div class='next-month js-months-nav' data-nav-dir='next'></div>";
   datepickerWrapper.innerHTML += "<div class='dropdown-calendar' id='calendar'></div>";

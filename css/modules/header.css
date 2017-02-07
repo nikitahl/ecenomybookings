@@ -149,6 +149,7 @@
           transition: background-color .5s;
   background-color: #ddd;
   font-weight: bold;
+  overflow: visible; /* fix for IE */
 }
 
 .start-date-btn:hover,
