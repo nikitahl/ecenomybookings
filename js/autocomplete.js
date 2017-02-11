@@ -1,240 +1,206 @@
 // Plain JS solution
-(function() {
+(function () {
+	"use strict";
 
+	// Form elements
 	var searchInputWrap = document.querySelector(".js-search-wrap");
 	var searchInput = document.querySelector(".js-search-input");
-	var storeLocations;
 
-	var ResultItem = function(country, city, airport, locations, searchInput) {
+	var ResultItem = function (country, city, airport, locations, inputValue) {
 		this.country = country;
 		this.city = city;
 		this.airport = airport;
 		this.locations = locations;
-		this.searchInput = searchInput;
+		this.inputValue = inputValue;
 	};
 
 	var autocomplete = {
-		resultsContainer: false,
+		locationData: "",
+		autocompleteWrapper: false,
+		resultContainer: false,
 		activeResults: false,
 		citiesFound: [],
 		locationsFound: [],
 		suggestionList: [],
 		suggestionOnFocus: null,
 		enterKeyEvent: false,
-		clearResults: function() {
+		activeEvents: false,
+		activeScroll: false,
+		clearResults: function () {
 			this.activeResults = false;
 			this.citiesFound.length = 0;
 			this.locationsFound.length = 0;
 			this.suggestionList.length = 0;
 			this.suggestionOnFocus = null;
 		},
-		collapse: function() {
+		collapse: function () {
 			if (this.activeResults) {
+				this.unassignEvents();
 				this.clearResults();
-				this.hideResults();
-				var acWrap = document.querySelector(".autocomplete-wrap");
-				acWrap.classList.add("is-hidden");
+				this.removeResults();
+				this.autocompleteWrapper.classList.add("is-hidden");
 			}
 		},
-		closeSearch: function(e) {
-			var acWrap = document.querySelector(".autocomplete-wrap");
-			if (e.target != acWrap ) {
-				autocomplete.collapse();
+		addAutocompleteWrap: function () {
+			var wrapperDiv = document.createElement("div");
+			wrapperDiv.classList.add("autocomplete-wrap");
+			var containerDiv = document.createElement("div");
+			containerDiv.classList.add("autocomplete");
+			wrapperDiv.appendChild(containerDiv);
+			searchInputWrap.appendChild(wrapperDiv);
+			this.autocompleteWrapper = wrapperDiv;
+			this.resultContainer = containerDiv;
+		},
+		removeResults: function () {
+			while (this.resultContainer.firstChild) {
+				this.resultContainer.removeChild(this.resultContainer.firstChild);
+			}
+			if (this.activeScroll) {
+				this.activeScroll = false;
+				this.resultContainer.classList.remove("autocomplete-scroll");
 			}
 		},
-		addAutocompleteWrap: function() {
-			var containerDiv  = document.createElement("div");
-			containerDiv.classList.add("autocomplete-wrap");
-			searchInputWrap.appendChild(containerDiv);
-			this.resultsContainer = true;
-		},
-		hideResults: function() {
-			var acWrap = document.querySelector(".autocomplete-wrap");
-			while (acWrap.firstChild) {
-	    acWrap.removeChild(acWrap.firstChild);
-			}
-		},
-		selectResultByIndex: function(result) {
-			for (var i = 0; i < this.suggestionList.length; i++) {
-				if (result === this.suggestionList[i]) {
-					this.suggestionOnFocus = i;
+		handleMouseMove: function (e) {
+			if (e.target.classList.contains("js-suggested-item")) {
+				var curIndx = [].slice.call(e.target.parentNode.children).indexOf(e.target);
+				if (this.suggestionOnFocus !== null) {
+					this.fadeResult(this.suggestionOnFocus);
 				}
+				this.suggestionOnFocus = curIndx;
+				this.highlightResult(curIndx);
 			}
 		},
-		mouseHighlightResult: function() {
-			var elems = autocomplete.suggestionList,
-					elemCount = elems.length - 1,
-					focusedElem = autocomplete.suggestionOnFocus;
-			if (focusedElem != null) {
-				elems[focusedElem].classList.remove("is-selected-result");
-			}
-			this.classList.add("is-selected-result");
-			autocomplete.selectResultByIndex(this);
+		fadeResult: function (i) {
+			this.suggestionList[i].classList.remove("is-selected-result");
 		},
-		mouseFadeResult: function() {
-			this.classList.remove("is-selected-result");
+		highlightResult: function (i) {
+			this.suggestionList[i].classList.add("is-selected-result");
 		},
-		highlightNextResult: function() {
-			var elems = this.suggestionList,
-					elemCount = elems.length - 1;
-			if ( this.suggestionOnFocus == null ) {
-				this.suggestionOnFocus = 0;
-				elems[0].classList.add("is-selected-result");
-			} else if ( this.suggestionOnFocus < elemCount ) {
-				elems[this.suggestionOnFocus].classList.remove("is-selected-result");
-				this.suggestionOnFocus++;
-				elems[this.suggestionOnFocus].classList.add("is-selected-result");
-			} else if ( this.suggestionOnFocus === elemCount ) {
-				elems[this.suggestionOnFocus].classList.remove("is-selected-result");
-				this.suggestionOnFocus = 0;
-				elems[0].classList.add("is-selected-result");
-			}
-		},
-		highlightPrevResult: function() {
-			var elems = this.suggestionList,
-					elemCount = elems.length - 1;
-			if ( 	this.suggestionOnFocus == null) {
-				this.suggestionOnFocus = elemCount;
-				elemCount[elemCount].classList.add("is-selected-result");
-			} else if ( this.suggestionOnFocus > 0 ) {
-				elems[this.suggestionOnFocus].classList.remove("is-selected-result");
-				this.suggestionOnFocus--;
-				elems[this.suggestionOnFocus].classList.add("is-selected-result");
-			} else if ( this.suggestionOnFocus === 0 ) {
-				elems[this.suggestionOnFocus].classList.remove("is-selected-result");
-				this.suggestionOnFocus = elemCount;
-				elems[this.suggestionOnFocus].classList.add("is-selected-result");
-			}
-		},
-		chooseResult: function(e) {
+		selectValue: function (e) {
 			e.preventDefault();
-			if (this.activeResults) {
-				this.selectValue(e);
+			if (e.type === "click" && e.target.closest(".js-suggested-item")) {
+				searchInput.value = e.target.closest(".js-suggested-item").innerText;
+			} else if (e.type === "keydown" && this.suggestionOnFocus != null) {
+				searchInput.value = this.suggestionList[this.suggestionOnFocus].innerText;
 			}
+			autocomplete.collapse();
 		},
-		selectResult: function(e) {
-			if (e.keyCode === 40) {
-				this.highlightNextResult();
-			} else if (e.keyCode === 38) {
-				this.highlightPrevResult();
-			} else if ( e.keyCode === 13 ) {
-				this.chooseResult(e);
-			} else if ( e.keyCode === 27 ) {
+		handleKeydown: function (e) {
+			if (e.keyCode === 40 && !this.nothingFound) { // key down
+				e.preventDefault();
+				if (this.suggestionOnFocus === null) {
+					this.suggestionOnFocus = 0;	
+					this.highlightResult(this.suggestionOnFocus);	
+				} else if (this.suggestionOnFocus === this.suggestionList.length - 1) {
+					this.fadeResult(this.suggestionOnFocus);
+					this.suggestionOnFocus = 0;	
+					this.highlightResult(this.suggestionOnFocus);	
+				} else {
+					this.fadeResult(this.suggestionOnFocus);
+					this.suggestionOnFocus++;
+					this.highlightResult(this.suggestionOnFocus);	
+				}
+				if (!this.suggestionList[this.suggestionOnFocus].classList.contains("js-suggested-item")) {
+					this.fadeResult(this.suggestionOnFocus);
+					this.suggestionOnFocus++;
+					this.highlightResult(this.suggestionOnFocus);
+				}
+ 			} else if (e.keyCode === 38 && !this.nothingFound) { // key up
+				e.preventDefault();
+				if (this.suggestionOnFocus === null) {
+					this.suggestionOnFocus = this.suggestionList.length - 1;	
+					this.highlightResult(this.suggestionOnFocus);	
+				} else if (this.suggestionOnFocus === 0) {
+					this.fadeResult(this.suggestionOnFocus);
+					this.suggestionOnFocus = this.suggestionList.length - 1;	
+					this.highlightResult(this.suggestionOnFocus);	
+				} else {
+					this.fadeResult(this.suggestionOnFocus);
+					this.suggestionOnFocus--;
+					this.highlightResult(this.suggestionOnFocus);
+				}
+				if (!this.suggestionList[this.suggestionOnFocus].classList.contains("js-suggested-item")) {
+					this.fadeResult(this.suggestionOnFocus);
+					this.suggestionOnFocus--;
+					this.highlightResult(this.suggestionOnFocus);	
+				}
+			} else if (e.keyCode === 13 && !this.nothingFound) { // key enter
+				this.selectValue(e);
+			} else if (e.keyCode === 27) { // key escape
 				this.collapse();
 			}
 		},
-		selectValue: function(e) {
-			var enterKey = (e.code === "Enter" || e.code === "NumpadEnter");
-			if (e.type === "click") {
-				var selectedValue = this.innerText;
-				searchInput.value = selectedValue;
-				autocomplete.collapse();
-			} else if (e.type === "keydown" && enterKey) {
-				if (this.suggestionOnFocus != null) {
-					var selectedValue = this.suggestionList[this.suggestionOnFocus].innerText;
-					searchInput.value = selectedValue;
-					autocomplete.collapse();
-				}
-			}
+		handleClick: function (e) {
+			e.target.closest(".autocomplete-wrap") !== this.autocompleteWrapper ? this.collapse() : this.selectValue(e);
 		},
-		assignEvents: function() {
-			var _this = this;
-			var suggestedResult = document.querySelectorAll(".js-suggested-item");
-			for (var i = 0; i < suggestedResult.length; i++) {
-				suggestedResult[i].addEventListener("click", _this.selectValue);
-				suggestedResult[i].addEventListener("mouseenter", _this.mouseHighlightResult);
-				suggestedResult[i].addEventListener("mouseleave", _this.mouseFadeResult);
-			}
-			if (!this.enterKeyEvent) {
-				document.addEventListener("keydown", _this.selectResult.bind(_this));
-				document.addEventListener("click", _this.closeSearch);
-				this.enterKeyEvent = true;
-			}
+		assignEvents: function () {
+			this.resultContainer.addEventListener("mousemove", handleMouseMove);
+			document.addEventListener("keydown", handleKeydown);
+			document.addEventListener("click", handleClick);
+			this.activeEvents = true;
 		},
-		getResultsCount: function() {
-			var acWrap = document.querySelector(".autocomplete-wrap");
-			var acWrapChildren = acWrap.children;
-			var childrenArr = [].slice.call(acWrapChildren);
-			for (var i = 0; i < childrenArr.length; i++) {
-				var el = childrenArr[i];
-				var elClass = el.classList;
-				for (var j = 0; j < elClass.length; j++) {
-					if (elClass[j] == "js-suggested-item") {
-						this.suggestionList.push(el)
-					}
-				}
-			}
+		unassignEvents: function() {
+			this.resultContainer.removeEventListener("mousemove", handleMouseMove);
+			document.removeEventListener("keydown", handleKeydown);
+			document.removeEventListener("click", handleClick);
+			this.activeEvents = false;
 		},
-		showResultForCity: function() {
-			this.hideResults();
-			var acWrap = document.querySelector(".autocomplete-wrap");
-			var suggestedCity = this.citiesFound[0].city,
-					suggestedCityCountry = this.citiesFound[0].country,
-					suggestedCityAirport = this.citiesFound[0].airport.name,
-					suggestedCityLocations = this.citiesFound[0].locations;
-			var inputValue = searchInput.value;
-			var l = inputValue.length;
+		getResultsCount: function () {
+			this.suggestionList = Array.prototype.slice.call(this.resultContainer.children);
+		},
+		showResultForCity: function () {
+			var city = this.citiesFound[0];
+			var l = city.inputValue.length;
 			var c;
-			var strPos = suggestedCity.toLowerCase().indexOf(inputValue);
+			var strPos = city.city.toLowerCase().indexOf(city.inputValue);
 			if (strPos > 0) {
-				c = suggestedCity.slice(0, strPos) + "<b>" + suggestedCity.slice(strPos, strPos + l) + "</b>" + suggestedCity.slice(strPos + l);
+				c = city.city.slice(0, strPos) + "<b>" + city.city.slice(strPos, strPos + l) + "</b>" + city.city.slice(strPos + l);
 			} else if (strPos === 0) {
-				c = "<b>" + suggestedCity.slice(0,l) + "</b>" +  suggestedCity.slice(l);
+				c = "<b>" + city.city.slice(0, l) + "</b>" + city.city.slice(l);
 			}
-			acWrap.innerHTML = "<div class='suggested-city js-suggested-item'>" + c + ", " + "<span class='country-faded'>" + suggestedCityCountry + "</span>" + "</div>";
-			acWrap.innerHTML += "<div class='suggested-city-airport js-suggested-item'>" + suggestedCityAirport + "</div>";
-			for (var i = 0; i < suggestedCityLocations.length; i++) {
-				acWrap.innerHTML += "<div class='suggested-city-locations js-suggested-item'>" + suggestedCityLocations[i] + "</div>";
-			}
+			this.resultContainer.innerHTML = "<div class='suggested-city js-suggested-item'>" + c + "<span class='country-faded'> " + city.country + "</span></div>";
+			this.resultContainer.innerHTML += "<div class='suggested-city-airport js-suggested-item'>" + city.airport + "</div>";
+			city.locations.forEach(function(location) {
+				this.resultContainer.innerHTML += "<div class='suggested-city-locations js-suggested-item'>" + c + " " + location + "</div>";
+			}.bind(this));
+			this.nothingFound = false;
 		},
-		showResultForCities: function() {
-			this.hideResults();
-			var acWrap = document.querySelector(".autocomplete-wrap");
-			var citiesFound = this.citiesFound;
-			for (var city in citiesFound) {
-				if (citiesFound.hasOwnProperty(city)) {
-					var suggestedCity = citiesFound[city].city,
-							suggestedCityCountry = citiesFound[city].country;
-					var inputValue = searchInput.value;
-					var l = inputValue.length;
-					var c;
-					var strPos = suggestedCity.toLowerCase().indexOf(inputValue);
-					if (strPos > 0) {
-						c = suggestedCity.slice(0, strPos) + "<b>" + suggestedCity.slice(strPos, strPos + l) + "</b>" + suggestedCity.slice(strPos + l);
-					} else if (strPos === 0) {
-						c = "<b>" + suggestedCity.slice(0,l) + "</b>" +  suggestedCity.slice(l);
-					}
-					acWrap.innerHTML += "<div class='suggested-cities js-suggested-item'>" + c + ", " + "<span class='country-faded'>" + suggestedCityCountry + "</span>" + "</div>";
+		showResultForCities: function () {
+			this.citiesFound.forEach(function(city) {
+				var l = city.inputValue.length;
+				var c;
+				var strPos = city.city.toLowerCase().indexOf(city.inputValue);
+				if (strPos > 0) {
+					c = city.city.slice(0, strPos) + "<b>" + city.city.slice(strPos, strPos + l) + "</b>" + city.city.slice(strPos + l);
+				} else if (strPos === 0) {
+					c = "<b>" + city.city.slice(0, l) + "</b>" + city.city.slice(l);
 				}
-			}
+				this.resultContainer.innerHTML += "<div class='suggested-cities js-suggested-item'>" + c + "<span class='country-faded'> " + city.country + "</span></div>";
+			}.bind(this));
+			this.nothingFound = false;
 		},
-		showResultForLocations: function() {
-			this.hideResults();
-			var acWrap = document.querySelector(".autocomplete-wrap");
-			var suggestedCity = this.locationsFound[0].city,
-					suggestedCityCountry = this.locationsFound[0].country,
-					suggestedCityAirport = this.locationsFound[0].airport,
-					suggestedCityLocations = this.locationsFound[0].locations;
-			acWrap.innerHTML = "<div class='suggested-airport js-suggested-item'>" + suggestedCityAirport + ", " + "<span class='country-faded'>" + suggestedCityCountry + "</span>" + "</div>";
-			acWrap.innerHTML += "<div class='suggested-airport-country'>" + suggestedCityCountry + "</div>";
-			for (var i = 0; i < suggestedCityLocations.length; i++) {
-				acWrap.innerHTML += "<div class='suggested-airport-location js-suggested-item'>" + suggestedCityLocations[i] + "</div>";
-			}
+		showResultForLocations: function () {
+			var result = this.locationsFound[0];
+			this.resultContainer.innerHTML = "<div class='suggested-airport js-suggested-item'>" + result.airport + "<span class='country-faded'> " + result.country + "</span></div>";
+			this.resultContainer.innerHTML += "<div class='suggested-airport-country'>" + result.country + "</div>";
+			result.locations.forEach(function(location) {
+				this.resultContainer.innerHTML += "<div class='suggested-city-locations js-suggested-item'>" + result.city + " " + location + "</div>";
+			}.bind(this));
+			this.nothingFound = false;
 		},
-		showNothingFound: function() {
-			this.hideResults();
-			var acWrap = document.querySelector(".autocomplete-wrap");
-			acWrap.innerHTML = "<div class='nothing-found'>Nothing found</div>"
+		showNothingFound: function () {
+			this.resultContainer.innerHTML = "<div class='nothing-found'>Nothing found</div>";
+			this.nothingFound = true;
 		},
-		parseResults: function() {
-			if ( !this.resultsContainer ) {
+		parseResults: function () {
+			if (!this.autocompleteWrapper) {
 				this.addAutocompleteWrap();
 			} else {
-				var acWrap = document.querySelector(".autocomplete-wrap");
-				acWrap.classList.remove("is-hidden");
+				this.autocompleteWrapper.classList.remove("is-hidden");
 			}
+			this.removeResults();
 			if (this.citiesFound.length) {
-				if (this.citiesFound.length === 1 ) {
+				if (this.citiesFound.length === 1) {
 					this.showResultForCity();
 				} else {
 					this.showResultForCities();
@@ -246,74 +212,73 @@
 			}
 			this.activeResults = true;
 			this.getResultsCount();
-			this.assignEvents();
-		},
-		searchCities: function(obj, inputValue) {
-			for (var city in obj.cities) {
-				if (obj.cities.hasOwnProperty(city)) {
-					var dataValue = city.toLowerCase();
-					var compareValues = dataValue.indexOf(inputValue);
-					if (compareValues > -1) {
-						var cityAirport = obj.cities[city].airport,
-								cityLocations = obj.cities[city].locations;
-						var item = new ResultItem(obj.countryName, city, cityAirport, cityLocations, inputValue);
-						this.citiesFound.push(item);
-					} else {
-						var airportCode = obj.cities[city].airport.code.toLowerCase();
-						var compareNames = airportCode.indexOf(inputValue);
-						var cityAirport = obj.cities[city].airport.name,
-								cityLocations = obj.cities[city].locations;
-						if (compareNames > -1) {
-							var item = new ResultItem(obj.countryName, city, cityAirport, cityLocations, inputValue);
-							this.locationsFound.push(item)
-						}
-					}
-				}
+			if (this.autocompleteWrapper.getBoundingClientRect().height > 200) {
+				this.activeScroll = true;
+				this.resultContainer.classList.add("autocomplete-scroll");
+			} else {
+				this.activeScroll = false;
+				this.resultContainer.classList.remove("autocomplete-scroll");
 			}
 		},
-		searchData: function(obj) {
-		  var userInput = searchInput.value,
-		      inputValue = userInput.toLowerCase();
-			this.searchCities(obj, inputValue);
+		searchData: function (country) {
+			var inputValue = searchInput.value.trim().toLowerCase().split(" ");
+			country.cities.forEach(function(city) {
+				var dataValue = city.name.toLowerCase();
+				var airportCode = city.airport.code.toLowerCase();
+				for (var i = 0; i < inputValue.length; i++) {
+					if (dataValue.indexOf(inputValue[i]) > -1) {
+						var item = new ResultItem(country.countryName, city.name, city.airport.name, city.locations, inputValue[i]);
+						this.citiesFound.push(item);
+						break;
+					} else if (airportCode.indexOf(inputValue[i]) > -1) {
+						var item = new ResultItem(country.countryName, city.name, city.airport.name, city.locations, inputValue[i]);
+						this.locationsFound.push(item);
+						break;
+					}
+				}
+			}.bind(this));
 		},
-		init: function() {
-			var inputValue = searchInput.value;
-
+		construct: function () {
 			this.clearResults();
-			for (var k in storeLocations) {
-		    if (storeLocations.hasOwnProperty(k)) {
-		      this.searchData(storeLocations[k]);
-		    }
-		  }
+			this.locationData.forEach(function(country) {
+				this.searchData(country);
+			}.bind(this));
 			this.parseResults();
+			if (!this.activeEvents) {
+				this.assignEvents();
+			}
+		},
+		handleInput: function () {
+			searchInput.value.trim().length >= 3 ? this.construct() : this.collapse();
+		},
+		loadData: function () {
+			var _this = this;
+			var ajax = new XMLHttpRequest();
+			ajax.open("GET", "https://api.myjson.com/bins/13jigt", false);
+			ajax.onreadystatechange = function () {
+				if (ajax.readyState == 4 && ajax.status == 200) {
+					var data = JSON.parse(ajax.responseText);
+					// Store object's "country" property with an array of countries objects
+					_this.locationData = data.countries;
+				}
+			};
+			ajax.send(null);
+		},
+		init: function () {
+			this.loadData();
+			handleClick = this.handleClick.bind(this);
+			handleKeydown = this.handleKeydown.bind(this);
+			handleMouseMove = this.handleMouseMove.bind(this);
+			handleInput = this.handleInput.bind(this)
+			searchInput.addEventListener("input", handleInput);
+			searchInput.removeEventListener("focus", init);
 		}
 	}
 
-	// Activate search results after 3 or more characters are entered
-	var parseData = function() {
-	  var inputValue = searchInput.value;
-		if ( inputValue.length >= 3 ) {
-			autocomplete.init();
-		} else {
-			autocomplete.collapse();
-		}
-	};
+	// Cache methods for events
+	var handleInput, handleClick, handleKeydown, handleMouseMove;
+	var init = autocomplete.init.bind(autocomplete);
 
-	// Load data with AJAX and store it in a variable
-	var loadData = function() {
-	  var ajax = new XMLHttpRequest();
-	  ajax.open("GET", "https://api.myjson.com/bins/3809q", false);
-	  ajax.onreadystatechange = function() {
-	    if (ajax.readyState == 4 && ajax.status == 200) {
-	      var data = JSON.parse(ajax.responseText);
-				// Store object's "country" property with an array of countries objects
-	      storeLocations = data.countries;
-	    }
-	  };
-	  ajax.send(null);
-	  searchInput.removeEventListener("focus", loadData);
-	};
-
-	searchInput.addEventListener("focus", loadData);
-	searchInput.addEventListener("input", parseData);
+	searchInput.addEventListener("focus", init);
+	
 })();

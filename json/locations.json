@@ -4,9 +4,9 @@
 			"countryName": "Australia",
 			"countryCode": "AUS",
 			"cities":
-			{
-				"Canberra":
+			[
 				{
+					"name": "Canberra",
 					"airport":
 					{
 						"code": "CBR",
@@ -18,8 +18,8 @@
 						"Railway Station"
 					]
 				},
-				"Melbourne":
 				{
+					"name": "Melbourne",
 					"airport":
 					{
 						"code": "MEL",
@@ -32,8 +32,8 @@
 						"Ferry Terminal"
 					]
 				},
-				"Sydney":
 				{
+					"name": "Sydney",
 					"airport":
 					{
 						"code": "SYD",
@@ -46,8 +46,8 @@
 						"Coach Station"
 					]
 				},
-				"Wollongong":
 				{
+					"name": "Wollongong",
 					"airport":
 					{
 						"code": "WOL",
@@ -59,15 +59,15 @@
 						"Railway Station"
 					]
 				}
-			}
+			]
 		},
 		{
 			"countryName": "Austria",
 			"countryCode": "AUT",
 			"cities":
-			{
-				"Innsbruck":
+			[
 				{
+					"name": "Innsbruck",
 					"airport":
 					{
 						"code": "INN",
@@ -79,8 +79,8 @@
 						"Railway Station"
 					]
 				},
-				"Salzburg":
 				{
+					"name": "Salzburg",
 					"airport":
 					{
 						"code": "SZG",
@@ -93,8 +93,8 @@
 						"Coach Station"
 					]
 				},
-				"Vienna":
 				{
+					"name": "Vienna",
 					"airport":
 					{
 						"code": "VIE",
@@ -106,8 +106,8 @@
 						"Railway Station"
 					]
 				},
-				"Wolfsberg":
 				{
+					"name": "Wolfsberg",
 					"airport":
 					{
 						"code": "(Wolfsberg Airport)",
@@ -119,7 +119,7 @@
 						"Railway Station"
 					]
 				}
-			}
+			]
 		}
 	]
 }
